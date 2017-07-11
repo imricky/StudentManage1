@@ -1,0 +1,388 @@
+﻿@{
+    Layout = "~/Views/Shared/_myLayout.cshtml";
+}
+
+@section showstu{
+    <script>
+
+    //    左边的树
+    Ext.onReady(function () {
+        Ext.QuickTips.init();
+//        renderTo: Ext.getBody();
+        var itemsPerPage = 2;//分页器
+
+//        //建立数据模型
+//        Ext.define('stuModel',{
+//            extend:'Ext.data.Model',
+//            fields: [{
+//                name: 'id',
+//                type: 'string',
+//                mapping: 'id'
+//            },{
+//                name: 'name',
+//                type: 'string',
+//                mapping: 'name'
+//            },{
+//                name: 'sex',
+//                type: 'int',
+//                mapping: 'sex'
+//            },{
+//                name: 'bir',
+//                type: 'date',
+//                mapping: 'bir'
+//            },{
+//                name: 'cls',
+//                type: 'string',
+//                mapping: 'cls'
+//            },{
+//                name: 'add',
+//                type: 'string',
+//                mapping: 'add'
+//            },{
+//                name: 'note',
+//                type: 'string',
+//                mapping: 'note'
+//            },{
+//                name: 'phone',
+//                type: 'string',
+//                mapping: 'phone'
+//            }]
+//        })
+//
+//        var store1 = Ext.create('Ext.data.store',{
+//            model: 'stuModel',
+//            autoLoad: true,
+//            pageSize: itemsPerPage,
+//            proxy: {
+//                type: 'ajax',
+//                url: 'GetListAdo',
+//                reader: {
+//                    type: 'json',
+//                    root: 'items',
+//                    totalProperty: 'total'
+//                }
+//            }
+//
+//        });
+
+
+
+
+        //建立顶部工具条
+        var toolbar = Ext.create('Ext.toolbar.Toolbar', {
+            renderTo: Ext.getBody(),
+            //width   : 700,
+            height:40,
+            items: [
+                {
+                    id:'add',
+                    text: '新增'
+                },{
+                    id:'del',
+                    text: '删除'
+                },{
+                    id:'mod',
+                    text: '修改'
+                },{
+                    id:'sel',
+                    text: '查询'
+                },
+                { xtype: 'tbspacer',width:400},
+                {
+                    xtype: 'tbtext',
+                    text: 'power by excellent Ext.js & c#',
+//                    text: 'make c# great again',
+
+
+                },
+                // begin using the right-justified button container
+                '->', // same as { xtype: 'tbfill' }
+                {
+                    xtype    : 'textfield',
+                    name     : 'field1',
+                    emptyText: '输入查询内容'
+                },
+
+                '-', // same as {xtype: 'tbseparator'} to create Ext.toolbar.Separator
+                { xtype: 'tbspacer'},
+                {
+                    // xtype: 'button', // default for Toolbars
+                    id:'ser',
+                    text: '搜索'
+                }
+            ]
+        });
+
+        //建立中上部表单
+        var states = Ext.create('Ext.data.Store', {
+            fields: ['abbr', 'name'],
+            data : [
+                {"abbr":"male", "name":"男"},
+                {"abbr":"famale", "name":"女"}
+
+
+            ]
+        });
+        var form = Ext.create('Ext.form.Panel', {
+            region: 'north',
+            frame: true,
+
+            title: '信息输入框',
+//            bodyPadding: 5,
+            maxLength: 20,
+            height: 180,
+//            margin:'0 0 30 0',
+//            draggable: true,
+            collapsible:true,
+
+
+            // The form will submit an AJAX request to this URL when submitted
+            //url: 'save-form.php',
+
+            layout: 'anchor',
+            defaults: {
+                anchor: '100%'
+            },
+            // The fields
+            //defaultType: 'textfield',
+            //id是为了表示该组件的唯一性，到时候给组件赋值的时候根据组件的id来赋值
+            //name是每个组件都必须有的，id可以没有，hiddenname常用于下拉框
+            //name:表单名称，这个比较重要，因为我们在与服务器交互的时候，服务端是按name接收post的参数值
+            items: [{
+                xtype: 'container',
+                layout: 'column',  //把整个空间划分成两列
+                frame:true,                       //为组件提供圆角边框;
+                fieldDefaults:{
+                  msgTarget:'side'
+                },
+//                defaults:{
+//                    anchor: '100%'
+//                },
+                items: [{
+                    columnWidth: 0.5,
+                    layout: 'form', //右边列再分成上下两行
+                    items: [{
+                        xtype: 'textfield',
+                        fieldLabel: '姓名', //第一行是用户名输入框
+                        allowBlank: false,
+                        blankText: "请输入用户名!",
+                        name: 'name',
+                        id: 'sName',
+                        anchor: '80%',
+                        regex:/[\u4E00-\u9FA5]{2,4}/, //正则表达式
+                        regexText:'温馨提示：请输入正确姓名'
+                    },{
+                        xtype: 'numberfield',
+                        fieldLabel: '学号', //第一行是用户名输入框
+                        allowBlank: false,
+                        blankText: "请输入学号!",
+                        name: 'id',
+                        id: 'sID',
+                        anchor: '80%',
+                        //width:10,
+                        regex: /[1-9-]*/ //学号正则判断
+                    },{
+                        xtype: 'combo',
+                        fieldLabel: '性别', //第一行是用户名输入框
+                        allowBlank: false,
+//                        blankText: "请输入性别!",
+                        store:states,
+                        valueField: 'abbr',
+                        displayField: 'name',
+                        editable : false,
+                        emptyText: "--请选择--",
+                        name: 'sex',
+                        id: 'sSex',
+                        anchor: '80%'
+                    },{
+                        xtype: 'datefield',
+                        fieldLabel: '出生年月', //第一行是用户名输入框
+                        allowBlank: false,
+                        blankText: "请输入出生年月!",
+                        maxValue: new Date(),
+                        editable : false,
+                        emptyText: "--请选择--",
+                        name: 'bir',
+                        id: 'sBir',
+                        anchor: '80%'
+                    }]
+                },{
+                        columnWidth: 0.5,
+                        layout: 'form', //右边列再分成上下两行
+                        items: [{
+                            xtype: 'textfield',
+                            fieldLabel: '班级', //第一行是用户名输入框
+                            allowBlank: false,
+                            blankText: "请输入班级!",
+                            name: 'cls',
+                            id: 'sCls',
+                            anchor: '80%'
+                        }, {
+                            xtype: 'textfield',
+                            fieldLabel: '住址', 
+                            allowBlank: false,
+                            blankText: "请输入住址!",
+                            name: 'add',
+                            id: 'sAdd',
+                            anchor: '80%'
+                            //inputType: 'password'
+                        },{
+                            xtype: 'textfield',
+                            fieldLabel: '联系方式', 
+                            allowBlank: false,
+                            blankText: "请输入联系方式!",
+                            regex:/^1[34578]\d{9}$/,
+                            regexText:'温馨提示：请输入正确的联系方式',
+                            name: 'phone',
+                            id: 'sPhone',
+                            anchor: '80%'
+                            //inputType: 'password'
+                        },{
+                            xtype: 'textfield',
+                            fieldLabel: '备注', 
+                            allowBlank: true,
+                            blankText: "请输入联系方式!",
+                            name: 'note',
+                            id: 'sNote',
+                            anchor: '80%'
+                            //inputType: 'password'
+                        }]
+                    }]
+            }],
+            renderTo: Ext.getBody()
+        });
+
+        //建立中心信息表格：
+         var store = Ext.create('Ext.data.Store', {
+            storeId:'simpsonsStore',
+             autoLoad: false,
+            fields:['name', 'email', 'phone'],
+//             totalProperty:'totalCount',
+
+             pageSize: itemsPerPage, // items per page
+            data:{'items':[
+                { 'name': 'Lisa',  "email":"lisa@simpsons.com",  "phone":"555-111-1224"  },
+                { 'name': '1',  "email":"bart@simpsons.com",  "phone":"555-222-1234" },
+                { 'name': '2', "email":"home@simpsons.com",  "phone":"555-222-1244"  },
+                { 'name': '3', "email":"marge@simpsons.com", "phone":"555-222-1254"  },
+                { 'name': '4', "email":"a@q.com", "phone":"44-12879"  },
+                { 'name': '5',  "email":"lisa@simpsons.com",  "phone":"555-111-1224"  },
+                { 'name': '6',  "email":"bart@simpsons.com",  "phone":"555-222-1234" },
+                { 'name': '7', "email":"home@simpsons.com",  "phone":"555-222-1244"  },
+                { 'name': '8', "email":"marge@simpsons.com", "phone":"555-222-1254"  },
+                { 'name': '9', "email":"a@q.com", "phone":"44-12879"  },
+                { 'name': '12',  "email":"lisa@simpsons.com",  "phone":"555-111-1224"  },
+                { 'name': '123',  "email":"bart@simpsons.com",  "phone":"555-222-1234" },
+                { 'name': '14', "email":"home@simpsons.com",  "phone":"555-222-1244"  },
+                { 'name': '15', "email":"marge@simpsons.com", "phone":"555-222-1254"  },
+                { 'name': '16', "email":"a@q.com", "phone":"44-12879"  }
+            ]},
+            proxy: {
+                type: 'memory',
+                reader: {
+                    type: 'json',
+                    root: 'items'
+                }
+            }
+        });
+//        store.loadPage(1);
+        store.load({
+            params:{
+                start:0,
+                limit: itemsPerPage
+            }
+        });
+
+        var grid = Ext.create('Ext.grid.Panel', {
+//            title: 'Simpsons',
+//            layout:'border',
+            region:'center',
+//            height: 500,
+//            layout: 'anchor',
+//            store: Ext.data.StoreManager.lookup('simpsonsStore'),
+            store: store,
+            columns: [
+                { xtype: "rownumberer", text: "序号", width:40 },//grid.panel默认不显示行号，于是要手动添加
+                {header: '姓名',  dataIndex: 'name', width:120,sortable:true }, //sortable:true 允许排序
+                {header: '学号',  dataIndex: 'id', width:120,sortable:true },
+                {header: '性别',  dataIndex: 'sex', width:120,sortable:true },
+                {header: '生日',  dataIndex: 'bir', width:120,sortable:true },
+                {header: '班级',  dataIndex: 'cls', width:120,flex: 1,sortable:true },
+                {header: '住址',  dataIndex: 'email', width:120,flex: 1,sortable:true },
+                {header: '联系方式',  dataIndex: 'phone', width:120,flex: 1,sortable:true },
+                {header: '备注',  dataIndex: 'note', width:120,flex: 1,sortable:true }
+
+            ],
+//            height: 200,
+//            width: 400,
+            dockedItems: [{
+                xtype: 'pagingtoolbar',
+                store: store,   // same store GridPanel is using
+                dock: 'bottom',
+                displayInfo: true
+            }],
+
+            renderTo: Ext.getBody()
+        });
+
+
+
+
+        //设置按钮事件
+        //新增
+        toolbar.items.get('add').on('click',function () {
+//            console.log("123")
+            //iframe调用父窗口中的OpenTab函数
+            var top = window.parent;
+            top.openTab('@Url.Content("~/Student/AddStudentInfo")','50','添加学生信息')
+//
+//            top.openTab('@Url.Content("~/Student/addStudentInfo2")','studentInfoDetail','添加学生信息');
+        })
+
+        //修改
+        toolbar.items.get('mod').on('click',function () {
+//            console.log("123")
+            //iframe调用父窗口中的OpenTab函数
+            var top = window.parent;
+            top.openTab('addStudentInfo2.html','59','添加学生信息')
+//
+//            top.openTab('@Url.Content("~/Student/addStudentInfo2")','studentInfoDetail','添加学生信息');
+        })
+
+        //删除
+        toolbar.items.get('del').on('click',function () {
+//            console.log("123")
+            //iframe调用父窗口中的OpenTab函数
+            var top = window.parent;
+            top.openTab('addStudentInfo2.html','5','添加学生信息')
+//
+//            top.openTab('@Url.Content("~/Student/addStudentInfo2")','studentInfoDetail','添加学生信息');
+        })
+
+        //查询
+        toolbar.items.get('sel').on('click',function () {
+//            console.log("123")
+            //iframe调用父窗口中的OpenTab函数
+            var top = window.parent;
+            top.openTab('addStudentInfo2.html','6','添加学生信息')
+//
+//            top.openTab('@Url.Content("~/Student/addStudentInfo2")','studentInfoDetail','添加学生信息');
+        })
+
+
+
+
+
+
+
+
+
+
+    })
+    </script>
+
+    
+
+    }
+
+

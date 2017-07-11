@@ -1,0 +1,156 @@
+﻿@{
+    Layout = "~/Views/Shared/_myLayout.cshtml";
+}
+
+@section addstu{
+
+    <script>
+
+    //    var id = '@ViewBag.ID';
+    //    var type = '@ViewBag.type';
+    Ext.onReady(function () {
+        Ext.onReady(function() {
+
+            Ext.QuickTips.init();
+            Ext.form.Field.prototype.msgTarget = 'side';
+
+            var form1 = new Ext.FormPanel({
+                id: '5',
+                layout: 'form',
+                draggable: true,
+                collapsible: true,
+                autoHeight: true,
+                frame: true,
+                renderTo: Ext.getBody(),
+                title: '<center style="curor:hand" onclick="window.location.reload();">学生信息表-编辑</center>',
+                style: 'margin-left:auto;margin-right:auto;width:500px;margin-top:20px;',
+                //设置标签对齐方式
+                labelAlign: 'right',
+                //设置标签宽
+                labelWidth: 170,
+                //设置按钮的对齐方式
+                buttonAlign:'center',
+                //默认元素属性设置
+                defaults:{
+                    width:180
+                },
+                items: [{
+                    xtype: 'textfield',
+                    fieldLabel: '姓名',
+                    allowBlank: false,
+                    blankText: "请输入用户名!",
+                    id: 'sName',
+                    name: 'name',
+                    regex:/[\u4E00-\u9FA5]{2,4}/, //正则表达式
+                    regexText:'温馨提示：请输入正确姓名'
+                    //,readOnly : true            //只读
+                    //,emptyText    :'请输入数据'    //为空时显示的文本，注意不是value
+                },{
+                    xtype: 'numberfield',
+                    fieldLabel: '学号', //第一行是用户名输入框
+                    allowBlank: false,
+                    blankText: "请输入学号!",
+                    name: 'id',
+                    id: 'sID',
+//                    anchor: '80%',
+                    regex: /[1-9-]*/ //学号正则判断
+                },{
+                    fieldLabel: '性别'
+                    ,xtype:'radiogroup'
+                    ,name:'Radios' //性别的name先没有设置  -> sex
+                    ,items:[
+                        {name : 'RadioItems',boxLabel:'男',inputValue:'1',checked:true},
+                        {name : 'RadioItems',boxLabel:'女',inputValue:'0'}
+                    ]
+                },{
+                    xtype: 'datefield',
+                    fieldLabel: '出生年月', //第一行是用户名输入框
+                    allowBlank: false,
+                    editable : false,
+                    blankText: "请输入出生年月!",
+                    maxValue: new Date(),
+                    emptyText: "--请选择--",
+                    name: 'bir',
+                    id: 'sBir'
+//                    anchor: '80%'
+                },{
+                    xtype: 'textfield',
+                    fieldLabel: '班级', //第一行是用户名输入框
+                    allowBlank: false,
+                    blankText: "请输入班级!",
+                    name: 'cls',
+                    id: 'sCls'
+//                    anchor: '80%'
+                },{
+                    xtype: 'textfield',
+                    fieldLabel: '住址', //第二行是密码输入框
+                    allowBlank: false,
+                    blankText: "请输入住址!",
+                    name: 'add',
+                    id: 'sAdd'
+//                    anchor: '80%'
+                    //inputType: 'password'
+                },{
+                    xtype: 'textfield',
+                    fieldLabel: '联系方式', //第二行是密码输入框
+                    allowBlank: false,
+                    blankText: "请输入联系方式!",
+                    regex:/^1[34578]\d{9}$/,
+                    regexText:'温馨提示：请输入正确的联系方式',
+                    name: 'phone',
+                    id: 'sPhone'
+//                    anchor: '80%'
+                    //inputType: 'password'
+                },{
+                    xtype: 'textfield',
+                    fieldLabel: '备注', //第二行是密码输入框
+                    allowBlank: true,
+                    blankText: "请输入联系方式!",
+                    name: 'note',
+                    id: 'sNote'
+//                    anchor: '80%'
+                    //inputType: 'password'
+                }],
+                buttons: [{
+                    text: "保 存"
+                    ,handler:function(){
+                        MsgInfo('保存');
+                    }
+                }, {
+                    text: "取 消"
+                    ,handler:function(){
+                        form1.form.reset();
+                    }
+                }]
+            });
+
+            function MsgInfo(str_msg)
+            {
+                Ext.MessageBox.show({
+                    title: '提示',
+                    msg: str_msg,
+                    width: 400,
+                    icon:Ext.MessageBox.INFO,
+                    buttons: Ext.MessageBox.OK
+                });
+            }
+        });
+        Ext.create('Ext.container.Viewport',{
+            id: 'viewPort',
+            style : 'background-image:url(../images/studentInfo.jpg);background-repeat: no-repeat;filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=\'scale\')";-moz-background-size:100% 100%;background-size:100% 100%;',
+            layout: 'border',
+            items:[
+                toolbar
+            ]
+        })
+    })
+
+
+
+
+
+
+    </script>
+
+    }
+

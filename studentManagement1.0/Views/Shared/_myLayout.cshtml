@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="gb2312">
+    <title>@ViewBag.Title</title>
+    <link type="text/css" href="~/extjs/resources/css/ext-all.css" rel="stylesheet" />
+    
+    <script type="text/javascript" src="~/extjs/ext-all-debug.js"></script>
+
+    @*<script type="text/javascript">
+        Ext.tip.QuickTipManager.init();
+    </script>*@ @*貌似解决方案里没有tip，不知道提示用在哪儿，没有找到*@
+
+    @RenderSection("ref",false)    @*false代表是否为必需*@
+    @RenderSection("main", false)  @*主页面*@
+    @RenderSection("showstu", false)    @*展示学生信息*@
+    @RenderSection("addstu", false)    @*添加学生信息*@
+
+    @RenderSection("addcourse", false)    @*添加课程信息*@
+    @RenderSection("showcourse", false)    @*添加课程信息*@
+
+    @RenderSection("addgrade", false)    @*添加课程信息*@
+    @RenderSection("showgrade", false)    @*添加课程信息*@
+
+</head>
+<body>
+    <script type="text/javascript" src="~/extjs/ext-lang-zh_CN.js"></script>
+    @*<h1>test</h1> //layout里面可以添加各种语法*@
+    
+    @RenderBody()
+</body>
+</html>
+

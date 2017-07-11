@@ -1,0 +1,275 @@
+﻿@{
+    Layout = "~/Views/Shared/_myLayout.cshtml";
+}
+
+@section showcourse{
+    <script>
+
+    //    左边的树
+    Ext.onReady(function () {
+        Ext.QuickTips.init();
+//        renderTo: Ext.getBody();
+        var itemsPerPage = 2;//分页器
+
+        //建立数据模型
+
+        //courseID: 课程号码
+        //courseName: 课程名字
+        //courseAch: 及格分数
+        //courseNote: 备注
+        Ext.define('gradeModel',{
+            extend:'Ext.data.Model',
+            fields: [{
+                name: 'courseID',
+                type: 'string',
+                mapping: 'courseID'
+            },{
+                name: 'courseName',
+                type: 'string',
+                mapping: 'courseName'
+            },{
+                name: 'courseAch',
+                type: 'int',
+                mapping: 'courseAch'
+            },{
+                name: 'courseNote',
+                type: 'string',
+                mapping: 'courseNote'
+            }]
+        });
+        Ext.define('idModel',{
+            extend: 'Ext.data.Model',
+            fields: [{
+                name: 'id',
+                type: 'string',
+                mapping: 'id'
+            }]
+        });
+
+
+
+        var toolbar = Ext.create('Ext.toolbar.Toolbar', {
+            region: 'north',
+            renderTo: Ext.getBody(),
+            //width   : 700,
+            height:40,
+            items: [
+                {
+                    id:'add',
+                    text: '新增'
+                },{
+                    id:'del',
+                    text: '删除'
+                },{
+                    id:'mod',
+                    text: '修改'
+                },{
+                    id:'sel',
+                    text: '查询'
+                },
+                { xtype: 'tbspacer',width:400},
+                {
+                    xtype: 'tbtext',
+                    text: 'power by excellent Ext.js & c#',
+                },
+                '->', // same as { xtype: 'tbfill' }
+                {
+                    xtype    : 'textfield',
+                    name     : 'field1',
+                    emptyText: '输入查询内容'
+                },
+
+                '-', // same as {xtype: 'tbseparator'} to create Ext.toolbar.Separator
+                { xtype: 'tbspacer'},
+                {
+                    // xtype: 'button', // default for Toolbars
+                    id:'ser',
+                    text: '搜索'
+                }
+            ]
+        });
+
+
+        var grid = Ext.create('Ext.grid.Panel',{
+            region: 'center',
+            store: store,
+            columns: [
+                { xtype: "rownumberer", text: "序号", width:40 },//grid.panel默认不显示行号，于是要手动添加
+                //sortable:true 允许排序
+                {header: '课程号',  dataIndex: 'courseID', width:120,sortable:true },
+                {header: '课程名',  dataIndex: 'courseName', width:120,sortable:true },
+                {header: '及格分数',  dataIndex: 'courseAch', width:120,sortable:true },
+                {header: '备注',  dataIndex: 'courseNote', width:120,sortable:true,flex:1 }
+            ],
+            dockedItems: [{
+                xtype: 'pagingtoolbar',
+                store: store,   // same store GridPanel is using
+                dock: 'bottom',
+                displayInfo: true
+            }],
+            renderTo: Ext.getBody()
+        });
+
+
+        var form =  Ext.create('Ext.form.Panel', {
+            region: 'north',
+            height: 150,
+            frame: true,
+            layout: 'border',
+            fieldDefaults : {
+                msgTarget: 'side'
+            },
+            defaults: {
+                anchor: '100%'
+            },
+            items: [{
+                xtype: 'container',
+                region: 'north',
+                border: false,
+                layout:  'column',
+                items: [{
+                    xtype: 'container',
+                    border: false,
+                    columnWidth: .4,
+                    defaultType: 'textfield',
+                    items: [{
+                        fieldLabel: '课程号',
+                        anchor: '95%',
+//                        emptyText : '请输入课程号，必须',
+                        name: 'courseID'
+                    },{
+                        fieldLabel: '课程名',
+//                        emptyText : '请输入课程名，必须',
+                        anchor: '95%',
+                        name: 'courseName'
+                    }]
+
+                },{
+                    xtype: 'container',
+                    columnWidth: .4,
+                    border: false,
+                    layout:  'anchor',
+                    defaultType: 'textfield',
+                    items: [{
+                        fieldLabel: '及格分数',
+                        name: 'courseAch',
+                        value: 0,
+                        anchor: '95%'
+                    },{
+                        fieldLabel: '备注',
+                        name: 'courseNote',
+//                        placeholder: 'qing',
+                        emptyText : '请输入备注，可不填',
+                        anchor: '95%'
+                    }]
+                }]
+            }]
+
+        });
+        Ext.create('Ext.container.Viewport',{
+            id: 'viewPort',
+            layout: 'border',
+            renderTo: Ext.getBody(),
+            items: [
+                toolbar,form,grid
+            ]
+        })
+
+
+        //建立顶部工具条
+
+
+        //建立存储
+        var states = Ext.create('Ext.data.Store', {
+            fields: ['abbr', 'name'],
+            data : [
+                {"abbr":"male", "name":"男"},
+                {"abbr":"famale", "name":"女"}
+
+
+            ]
+        });
+
+
+        //建立数据存储
+        var store = Ext.create('Ext.data.Store', {
+            storeId:'simpsonsStore',
+            autoLoad: false,
+            fields:['name', 'email', 'phone'],
+//             totalProperty:'totalCount',
+
+            pageSize: itemsPerPage, // items per page
+            data:{'items':[
+                { 'name': 'Lisa',  "ach1":"lisa@simpsons.com",  "ach2":"555-111-1224"  },
+                { 'name': '1',  "email":"bart@simpsons.com",  "phone":"555-222-1234" },
+                { 'name': '2', "email":"home@simpsons.com",  "phone":"555-222-1244"  },
+                { 'name': '3', "email":"marge@simpsons.com", "phone":"555-222-1254"  },
+                { 'name': '4', "email":"a@q.com", "phone":"44-12879"  },
+                { 'name': '5',  "email":"lisa@simpsons.com",  "phone":"555-111-1224"  },
+                { 'name': '6',  "email":"bart@simpsons.com",  "phone":"555-222-1234" },
+                { 'name': '7', "email":"home@simpsons.com",  "phone":"555-222-1244"  },
+                { 'name': '8', "email":"marge@simpsons.com", "phone":"555-222-1254"  },
+                { 'name': '9', "email":"a@q.com", "phone":"44-12879"  },
+                { 'name': '12',  "email":"lisa@simpsons.com",  "phone":"555-111-1224"  },
+                { 'name': '123',  "email":"bart@simpsons.com",  "phone":"555-222-1234" },
+                { 'name': '14', "email":"home@simpsons.com",  "phone":"555-222-1244"  },
+                { 'name': '15', "email":"marge@simpsons.com", "phone":"555-222-1254"  },
+                { 'name': '16', "email":"a@q.com", "phone":"44-12879"  }
+            ]},
+            proxy: {
+                type: 'memory',
+                reader: {
+                    type: 'json',
+                    root: 'items'
+                }
+            }
+        });
+
+                        //设置按钮事件
+        //新增
+        toolbar.items.get('add').on('click',function () {
+//            console.log("123")
+            //iframe调用父窗口中的OpenTab函数
+            var top = window.parent;
+            top.openTab('@Url.Content("~/Course/AddCourseInfo")','50','添加学生信息')
+//
+//            top.openTab('@Url.Content("~/Student/addStudentInfo2")','studentInfoDetail','添加学生信息');
+        })
+
+        //修改
+        toolbar.items.get('mod').on('click',function () {
+//            console.log("123")
+            //iframe调用父窗口中的OpenTab函数
+            var top = window.parent;
+            top.openTab('addStudentInfo2.html','59','添加学生信息')
+//
+//            top.openTab('@Url.Content("~/Student/addStudentInfo2")','studentInfoDetail','添加学生信息');
+        })
+
+        //删除
+        toolbar.items.get('del').on('click',function () {
+//            console.log("123")
+            //iframe调用父窗口中的OpenTab函数
+            var top = window.parent;
+            top.openTab('addStudentInfo2.html','5','添加学生信息')
+//
+//            top.openTab('@Url.Content("~/Student/addStudentInfo2")','studentInfoDetail','添加学生信息');
+        })
+
+        //查询
+        toolbar.items.get('sel').on('click',function () {
+//            console.log("123")
+            //iframe调用父窗口中的OpenTab函数
+            var top = window.parent;
+            top.openTab('addStudentInfo2.html','6','添加学生信息')
+//
+//            top.openTab('@Url.Content("~/Student/addStudentInfo2")','studentInfoDetail','添加学生信息');
+        })
+
+
+    })
+    </script>
+
+
+
+    }

@@ -1,0 +1,308 @@
+﻿@{
+    Layout = "~/Views/Shared/_myLayout.cshtml";
+}
+@section showgrade{
+    <script>
+
+    //    左边的树
+    Ext.onReady(function () {
+        Ext.QuickTips.init();
+//        renderTo: Ext.getBody();
+        var itemsPerPage = 2;//分页器
+
+        //建立数据模型
+        Ext.define('gradeModel',{
+            extend:'Ext.data.Model',
+            fields: [{
+                name: 'id',
+                type: 'string',
+                mapping: 'id'
+            },{
+                name: 'name',
+                type: 'string',
+                mapping: 'name'
+            },{
+                name: 'ach1',
+                type: 'int',
+                mapping: 'ach1'
+            },{
+                name: 'ach2',
+                type: 'int',
+                mapping: 'ach2'
+            },{
+                name: 'ach3',
+                type: 'int',
+                mapping: 'ach3'
+            },{
+                name: 'ach4',
+                type: 'int',
+                mapping: 'ach4'
+            },{
+                name: 'ach5',
+                type: 'int',
+                mapping: 'ach5'
+            }]
+        });
+        Ext.define('idModel',{
+            extend: 'Ext.data.Model',
+            fields: [{
+                name: 'id',
+                type: 'string',
+                mapping: 'id'
+            }]
+        });
+
+
+
+        var toolbar = Ext.create('Ext.toolbar.Toolbar', {
+            region: 'north',
+            renderTo: Ext.getBody(),
+            //width   : 700,
+            height:40,
+            items: [
+                {
+                    id:'add',
+                    text: '新增'
+                },{
+                    id:'del',
+                    text: '删除'
+                },{
+                    id:'mod',
+                    text: '修改'
+                },{
+                    id:'sel',
+                    text: '查询'
+                },
+                { xtype: 'tbspacer',width:400},
+                {
+                    xtype: 'tbtext',
+                    text: 'power by excellent Ext.js & c#',
+                },
+                '->', // same as { xtype: 'tbfill' }
+                {
+                    xtype    : 'textfield',
+                    name     : 'field1',
+                    emptyText: '输入查询内容'
+                },
+
+                '-', // same as {xtype: 'tbseparator'} to create Ext.toolbar.Separator
+                { xtype: 'tbspacer'},
+                {
+                    // xtype: 'button', // default for Toolbars
+                    id:'ser',
+                    text: '搜索'
+                }
+            ]
+        });
+
+
+        var grid = Ext.create('Ext.grid.Panel',{
+            region: 'center',
+            store: store,
+            columns: [
+                { xtype: "rownumberer", text: "序号", width:40 },//grid.panel默认不显示行号，于是要手动添加
+                 //sortable:true 允许排序
+                {header: '学号',  dataIndex: 'id', width:120,sortable:true },
+                {header: '姓名',  dataIndex: 'name', width:120,sortable:true },
+                {header: '语文',  dataIndex: 'ach1', width:120,sortable:true },
+                {header: '数学',  dataIndex: 'ach2', width:120,sortable:true },
+                {header: '英语',  dataIndex: 'ach3', width:120,flex: 1,sortable:true },
+                {header: '物理',  dataIndex: 'ach4', width:120,flex: 1,sortable:true },
+                {header: '总分',  dataIndex: 'ach5', width:120,flex: 1,sortable:true },
+            ],
+            dockedItems: [{
+                xtype: 'pagingtoolbar',
+                store: store,   // same store GridPanel is using
+                dock: 'bottom',
+                displayInfo: true
+            }],
+            renderTo: Ext.getBody()
+        });
+
+
+        var form =  Ext.create('Ext.form.Panel', {
+            region: 'north',
+            height: 150,
+            frame: true,
+            layout: 'border',
+            fieldDefaults : {
+                msgTarget: 'side'
+            },
+            defaults: {
+                anchor: '100%'
+            },
+            items: [{
+                xtype: 'container',
+                region: 'north',
+                border: false,
+                layout:  'column',
+                items: [{
+                    xtype: 'container',
+                    border: false,
+                    columnWidth: .4,
+                    defaultType: 'textfield',
+                    items: [{
+                        xtype: 'combo',
+                        fieldLabel: '学号',
+                        store: states,
+                        anchor: '95%',
+                        name: 'id',
+                        queryMode: 'local', //查询模式
+                        editable: false, //是否可编辑
+                        displayField: 'id',           //显示的字段
+                        valueField: 'id'            //值的字段
+                    },{
+                        xtype: 'combo',
+                        fieldLabel: '课程号',
+//                        store: states2,
+                        anchor: '95%',
+                        name: 'kch',
+                        queryMode: 'local', //查询模式
+                        editable: false, //是否可编辑
+                        displayField: 'kch',           //显示的字段
+                        valueField: 'kch'            //值的字段
+                    }]
+
+                },{
+                    xtype: 'container',
+                    columnWidth: .4,
+                    border: false,
+                    layout:  'anchor',
+                    defaultType: 'textfield',
+                    items: [{
+                        fieldLabel: '分数',
+                        name: 'ach',
+                        value: 0,
+                        anchor: '95%'
+                    },{
+                        xtype: 'container',
+                        columnWidth: .4,
+                        border: false,
+                        layout:  'column',
+                        defaultType: 'textfield',
+                        items: [{
+                            fieldLabel: '分数区间',
+                            columnWidth: .5,
+                            name: 'achlow',
+                            anchor: '95%'
+                        },{
+                            labelWidth:55,
+                            fieldLabel: '到',
+                            columnWidth: .4,
+                            name: 'achhigh',
+                            anchor: '95%'
+                        }]
+                    }]
+                }]
+            }]
+
+        });
+        Ext.create('Ext.container.Viewport',{
+            id: 'viewPort',
+            layout: 'border',
+            renderTo: Ext.getBody(),
+            items: [
+                toolbar,form,grid
+            ]
+        })
+
+
+        //建立顶部工具条
+
+
+        //建立中上部表单
+        var states = Ext.create('Ext.data.Store', {
+            fields: ['abbr', 'name'],
+            data : [
+                {"abbr":"male", "name":"男"},
+                {"abbr":"famale", "name":"女"}
+
+
+            ]
+        });
+
+
+        //建立中心信息表格：
+        var store = Ext.create('Ext.data.Store', {
+            storeId:'simpsonsStore',
+            autoLoad: false,
+            fields:['name', 'email', 'phone'],
+//             totalProperty:'totalCount',
+
+            pageSize: itemsPerPage, // items per page
+            data:{'items':[
+                { 'name': 'Lisa',  "ach1":"lisa@simpsons.com",  "ach2":"555-111-1224"  },
+                { 'name': '1',  "email":"bart@simpsons.com",  "phone":"555-222-1234" },
+                { 'name': '2', "email":"home@simpsons.com",  "phone":"555-222-1244"  },
+                { 'name': '3', "email":"marge@simpsons.com", "phone":"555-222-1254"  },
+                { 'name': '4', "email":"a@q.com", "phone":"44-12879"  },
+                { 'name': '5',  "email":"lisa@simpsons.com",  "phone":"555-111-1224"  },
+                { 'name': '6',  "email":"bart@simpsons.com",  "phone":"555-222-1234" },
+                { 'name': '7', "email":"home@simpsons.com",  "phone":"555-222-1244"  },
+                { 'name': '8', "email":"marge@simpsons.com", "phone":"555-222-1254"  },
+                { 'name': '9', "email":"a@q.com", "phone":"44-12879"  },
+                { 'name': '12',  "email":"lisa@simpsons.com",  "phone":"555-111-1224"  },
+                { 'name': '123',  "email":"bart@simpsons.com",  "phone":"555-222-1234" },
+                { 'name': '14', "email":"home@simpsons.com",  "phone":"555-222-1244"  },
+                { 'name': '15', "email":"marge@simpsons.com", "phone":"555-222-1254"  },
+                { 'name': '16', "email":"a@q.com", "phone":"44-12879"  }
+            ]},
+            proxy: {
+                type: 'memory',
+                reader: {
+                    type: 'json',
+                    root: 'items'
+                }
+            }
+        });
+
+
+                //设置按钮事件
+        //新增
+        toolbar.items.get('add').on('click',function () {
+//            console.log("123")
+            //iframe调用父窗口中的OpenTab函数
+            var top = window.parent;
+            top.openTab('@Url.Content("~/Grade/AddGradeInfo")','50','添加学生信息')
+//
+//            top.openTab('@Url.Content("~/Student/addStudentInfo2")','studentInfoDetail','添加学生信息');
+        })
+
+        //修改
+        toolbar.items.get('mod').on('click',function () {
+//            console.log("123")
+            //iframe调用父窗口中的OpenTab函数
+            var top = window.parent;
+            top.openTab('addStudentInfo2.html','59','添加学生信息')
+//
+//            top.openTab('@Url.Content("~/Student/addStudentInfo2")','studentInfoDetail','添加学生信息');
+        })
+
+        //删除
+        toolbar.items.get('del').on('click',function () {
+//            console.log("123")
+            //iframe调用父窗口中的OpenTab函数
+            var top = window.parent;
+            top.openTab('addStudentInfo2.html','5','添加学生信息')
+//
+//            top.openTab('@Url.Content("~/Student/addStudentInfo2")','studentInfoDetail','添加学生信息');
+        })
+
+        //查询
+        toolbar.items.get('sel').on('click',function () {
+//            console.log("123")
+            //iframe调用父窗口中的OpenTab函数
+            var top = window.parent;
+            top.openTab('addStudentInfo2.html','6','添加学生信息')
+//
+//            top.openTab('@Url.Content("~/Student/addStudentInfo2")','studentInfoDetail','添加学生信息');
+        })
+
+
+
+
+    })
+    </script>
+
+    }
+

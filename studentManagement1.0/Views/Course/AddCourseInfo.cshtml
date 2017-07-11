@@ -1,0 +1,104 @@
+﻿@{
+    Layout = "~/Views/Shared/_myLayout.cshtml";
+}
+
+@section addcourse{
+    <script>
+
+    //    var id = '@ViewBag.ID';
+    //    var type = '@ViewBag.type';
+    Ext.onReady(function () {
+        var states = Ext.create('Ext.data.Store', {
+            fields: ['abbr', 'name'],
+            data : [
+                {"abbr":"male", "name":"男"},
+                {"abbr":"famale", "name":"女"}
+
+
+            ]
+        });
+
+        var form1 = new Ext.FormPanel({
+            layout: 'form',
+//            style : 'background-image:url(../images/studentGrade.jpg);background-repeat: no-repeat;filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=\'scale\')";-moz-background-size:100% 100%;background-size:100% 100%;',
+            collapsible: true,
+            autoHeight: true,
+            bodyStyle: 'background:#87cefa; padding:10px;',
+//            marginTop: '50px',
+            frame: true,
+            renderTo: Ext.getBody(),
+            title: '<center style="curor:hand" onclick="window.location.reload();">课程信息表-编辑</center>',
+            style: 'margin-left:auto;margin-right:auto;width:500px;margin-top:200px;',
+
+            //设置标签对齐方式
+            labelAlign: 'right',
+            //设置标签宽
+            labelWidth: 170,
+            //设置按钮的对齐方式
+            buttonAlign:'center',
+            //默认元素属性设置
+            defaults:{
+                width:180
+            },
+            items: [{
+                fieldLabel: '课程号'
+                ,name:'courseID'
+                ,xtype:'textfield'
+            },{
+                fieldLabel: '课程名'
+                ,name:'courseName'
+                ,xtype:'textfield'
+            },{
+                fieldLabel: '及格分数'
+                ,name:'courseAch'
+                ,xtype:'numberfield'
+            },{
+                fieldLabel: '备注'
+                ,name:'courseNote'
+                ,xtype:'textfield'
+            }],
+            buttons: [{
+                text: "添 加",
+                id: 'add'
+                ,handler:function(){
+                    MsgInfo('保存');
+                }
+            }, {
+                text: "取 消",
+                id: 'cel'
+                ,handler:function(){
+                    form1.form.reset();
+                }
+            }]
+        });
+
+        function MsgInfo(str_msg)
+        {
+            Ext.MessageBox.show({
+                title: '提示',
+                msg: str_msg,
+                width: 400,
+                icon:Ext.MessageBox.INFO,
+                buttons: Ext.MessageBox.OK
+            });
+        }
+
+
+        Ext.create('Ext.container.Viewport',{
+            id: 'viewPort',
+            style : 'background-image:url(../images/courseInfo.jpg);background-repeat: no-repeat;filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=\'scale\')";-moz-background-size:100% 100%;background-size:100% 100%;',
+            layout: 'border',
+            items:[
+//                toolbar
+            ]
+        })
+
+
+
+    })
+
+
+
+
+    </script>
+    }
