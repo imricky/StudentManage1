@@ -13,7 +13,7 @@ namespace DBHelper
         private static string connStr = System.Configuration.ConfigurationManager.AppSettings["connectStr"];
 
         //DbUtil是干啥的？
-        public DbUtil()
+        public void DbUtil()
         {
 
         }
