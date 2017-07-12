@@ -11,62 +11,59 @@
 //        renderTo: Ext.getBody();
         var itemsPerPage = 2;//分页器
 
-//        //建立数据模型
-//        Ext.define('stuModel',{
-//            extend:'Ext.data.Model',
-//            fields: [{
-//                name: 'id',
-//                type: 'string',
-//                mapping: 'id'
-//            },{
-//                name: 'name',
-//                type: 'string',
-//                mapping: 'name'
-//            },{
-//                name: 'sex',
-//                type: 'int',
-//                mapping: 'sex'
-//            },{
-//                name: 'bir',
-//                type: 'date',
-//                mapping: 'bir'
-//            },{
-//                name: 'cls',
-//                type: 'string',
-//                mapping: 'cls'
-//            },{
-//                name: 'adr',
-//                type: 'string',
-//                mapping: 'adr'
-//            },{
-//                name: 'note',
-//                type: 'string',
-//                mapping: 'note'
-//            },{
-//                name: 'phone',
-//                type: 'string',
-//                mapping: 'phone'
-//            }]
-//        })
-//
-//        var store1 = Ext.create('Ext.data.store',{
-//            model: 'stuModel',
-//            autoLoad: true,
-//            pageSize: itemsPerPage,
-//            proxy: {
-//                type: 'ajax',
-//                url: 'GetListAdo',
-//                reader: {
-//                    type: 'json',
-//                    root: 'items',
-//                    totalProperty: 'total'
-//                }
-//            }
-//
-//        });
+        //建立数据模型
+        Ext.define('stuModel',{
+            extend:'Ext.data.Model',
+            fields: [{
+                name: 'id',
+                type: 'string',
+                mapping: 'id'
+            },{
+                name: 'name',
+                type: 'string',
+                mapping: 'name'
+            },{
+                name: 'sex',
+                type: 'int',
+                mapping: 'sex'
+            },{
+                name: 'bir',
+                type: 'date',
+                mapping: 'bir'
+            },{
+                name: 'cls',
+                type: 'string',
+                mapping: 'cls'
+            },{
+                name: 'adr',
+                type: 'string',
+                mapping: 'adr'
+            },{
+                name: 'note',
+                type: 'string',
+                mapping: 'note'
+            },{
+                name: 'phone',
+                type: 'string',
+                mapping: 'phone'
+            }]
+        })
 
+        var store = Ext.create('Ext.data.Store',{
+            model: 'stuModel',
+            autoLoad: true,
+            pageSize: itemsPerPage,
+            proxy: {
+                type: 'ajax',
+                url: 'GetListAdo',
+                reader: {
+                    type: 'json',
+                    root: 'items',
+                    totalProperty: 'total'
+                }
+            }
 
-
+        });
 
         //建立顶部工具条
         var toolbar = Ext.create('Ext.toolbar.Toolbar', {
@@ -90,10 +87,7 @@
                 { xtype: 'tbspacer',width:400},
                 {
                     xtype: 'tbtext',
-                    text: 'power by excellent Ext.js & c#',
-//                    text: 'make c# great again',
-
-
+                    text: 'power by excellent Ext.js & c#'
                 },
                 // begin using the right-justified button container
                 '->', // same as { xtype: 'tbfill' }
@@ -126,7 +120,6 @@
         var form = Ext.create('Ext.form.Panel', {
             region: 'north',
             frame: true,
-
             title: '信息输入框',
 //            bodyPadding: 5,
             maxLength: 20,
@@ -134,11 +127,8 @@
 //            margin:'0 0 30 0',
 //            draggable: true,
             collapsible:true,
-
-
             // The form will submit an AJAX request to this URL when submitted
             //url: 'save-form.php',
-
             layout: 'anchor',
             defaults: {
                 anchor: '100%'
@@ -253,45 +243,45 @@
         });
 
         //建立中心信息表格：
-         var store = Ext.create('Ext.data.Store', {
-            storeId:'simpsonsStore',
-             autoLoad: false,
-            fields:['name', 'email', 'phone'],
-//             totalProperty:'totalCount',
+//         var store = Ext.create('Ext.data.Store', {
+//            storeId:'simpsonsStore',
+//             autoLoad: false,
+//            fields:['name', 'email', 'phone'],
+////             totalProperty:'totalCount',
 
-             pageSize: itemsPerPage, // items per page
-            data:{'items':[
-                { 'name': 'Lisa',  "email":"lisa@simpsons.com",  "phone":"555-111-1224"  },
-                { 'name': '1',  "email":"bart@simpsons.com",  "phone":"555-222-1234" },
-                { 'name': '2', "email":"home@simpsons.com",  "phone":"555-222-1244"  },
-                { 'name': '3', "email":"marge@simpsons.com", "phone":"555-222-1254"  },
-                { 'name': '4', "email":"a@q.com", "phone":"44-12879"  },
-                { 'name': '5',  "email":"lisa@simpsons.com",  "phone":"555-111-1224"  },
-                { 'name': '6',  "email":"bart@simpsons.com",  "phone":"555-222-1234" },
-                { 'name': '7', "email":"home@simpsons.com",  "phone":"555-222-1244"  },
-                { 'name': '8', "email":"marge@simpsons.com", "phone":"555-222-1254"  },
-                { 'name': '9', "email":"a@q.com", "phone":"44-12879"  },
-                { 'name': '12',  "email":"lisa@simpsons.com",  "phone":"555-111-1224"  },
-                { 'name': '123',  "email":"bart@simpsons.com",  "phone":"555-222-1234" },
-                { 'name': '14', "email":"home@simpsons.com",  "phone":"555-222-1244"  },
-                { 'name': '15', "email":"marge@simpsons.com", "phone":"555-222-1254"  },
-                { 'name': '16', "email":"a@q.com", "phone":"44-12879"  }
-            ]},
-            proxy: {
-                type: 'memory',
-                reader: {
-                    type: 'json',
-                    root: 'items'
-                }
-            }
-        });
+//             pageSize: itemsPerPage, // items per page
+//            data:{'items':[
+//                { 'name': 'Lisa',  "email":"lisa@simpsons.com",  "phone":"555-111-1224"  },
+//                { 'name': '1',  "email":"bart@simpsons.com",  "phone":"555-222-1234" },
+//                { 'name': '2', "email":"home@simpsons.com",  "phone":"555-222-1244"  },
+//                { 'name': '3', "email":"marge@simpsons.com", "phone":"555-222-1254"  },
+//                { 'name': '4', "email":"a@q.com", "phone":"44-12879"  },
+//                { 'name': '5',  "email":"lisa@simpsons.com",  "phone":"555-111-1224"  },
+//                { 'name': '6',  "email":"bart@simpsons.com",  "phone":"555-222-1234" },
+//                { 'name': '7', "email":"home@simpsons.com",  "phone":"555-222-1244"  },
+//                { 'name': '8', "email":"marge@simpsons.com", "phone":"555-222-1254"  },
+//                { 'name': '9', "email":"a@q.com", "phone":"44-12879"  },
+//                { 'name': '12',  "email":"lisa@simpsons.com",  "phone":"555-111-1224"  },
+//                { 'name': '123',  "email":"bart@simpsons.com",  "phone":"555-222-1234" },
+//                { 'name': '14', "email":"home@simpsons.com",  "phone":"555-222-1244"  },
+//                { 'name': '15', "email":"marge@simpsons.com", "phone":"555-222-1254"  },
+//                { 'name': '16', "email":"a@q.com", "phone":"44-12879"  }
+//            ]},
+//            proxy: {
+//                type: 'memory',
+//                reader: {
+//                    type: 'json',
+//                    root: 'items'
+//                }
+//            }
+//        });
 //        store.loadPage(1);
-        store.load({
-            params:{
-                start:0,
-                limit: itemsPerPage
-            }
-        });
+        //store.load({
+        //    params:{
+        //        start:0,
+        //        limit: itemsPerPage
+        //    }
+        //});
 
         var grid = Ext.create('Ext.grid.Panel', {
 //            title: 'Simpsons',
@@ -300,7 +290,7 @@
 //            height: 500,
 //            layout: 'anchor',
 //            store: Ext.data.StoreManager.lookup('simpsonsStore'),
-            store: store,
+            //store: store,
             columns: [
                 { xtype: "rownumberer", text: "序号", width:40 },//grid.panel默认不显示行号，于是要手动添加
                 {header: '姓名',  dataIndex: 'name', width:120,sortable:true }, //sortable:true 允许排序
@@ -313,11 +303,9 @@
                 {header: '备注',  dataIndex: 'note', width:120,flex: 1,sortable:true }
 
             ],
-//            height: 200,
-//            width: 400,
             dockedItems: [{
                 xtype: 'pagingtoolbar',
-                store: store,   // same store GridPanel is using
+                //store: store,   // same store GridPanel is using
                 dock: 'bottom',
                 displayInfo: true
             }],

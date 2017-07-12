@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StudentMDataAccess
+
+namespace StudentMController
 {
-    public class Class2
+    public class Class1
     {
     }
 }

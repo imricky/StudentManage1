@@ -43,21 +43,21 @@ namespace studentManagement1._0.Controllers
     }
 
     //学生信息控制器
-    public class StudentController : Controller {
-        public ActionResult ShowStudentInfo()
-        {
-            ViewBag.Message = "Your contact page.";
+    //public class StudentController : Controller {
+    //    public ActionResult ShowStudentInfo()
+    //    {
+    //        ViewBag.Message = "Your contact page.";
 
-            return View();
-        }
+    //        return View();
+    //    }
 
-        public ActionResult AddStudentInfo()
-        {
-            ViewBag.Message = "Your contact page.";
+    //    public ActionResult AddStudentInfo()
+    //    {
+    //        ViewBag.Message = "Your contact page.";
 
-            return View();
-        }
-    }
+    //        return View();
+    //    }
+    //}
 
     //课程控制器
     public class CourseController : Controller
