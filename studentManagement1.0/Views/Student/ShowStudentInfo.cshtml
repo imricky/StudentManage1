@@ -42,10 +42,6 @@
                 name: 'note',
                 type: 'string',
                 mapping: 'note'
-            },{
-                name: 'phone',
-                type: 'string',
-                mapping: 'phone'
             }]
         })
 
@@ -209,29 +205,31 @@
                             anchor: '80%'
                         }, {
                             xtype: 'textfield',
-                            fieldLabel: '住址', 
+                            fieldLabel: '住址',
                             allowBlank: false,
                             blankText: "请输入住址!",
                             name: 'adr',
                             id: 'sAdd',
                             anchor: '80%'
                             //inputType: 'password'
-                        },{
+                            },
+                        //    {
+                        //    xtype: 'textfield',
+                        //    fieldLabel: '联系方式',
+                        //    allowBlank: false,
+                        //    blankText: "请输入联系方式!",
+                        //    regex:/^1[34578]\d{9}$/,
+                        //    regexText:'温馨提示：请输入正确的联系方式',
+                        //    name: 'phone',
+                        //    id: 'sPhone',
+                        //    anchor: '80%'
+                        //    //inputType: 'password'
+                        //},
+                        {
                             xtype: 'textfield',
-                            fieldLabel: '联系方式', 
-                            allowBlank: false,
-                            blankText: "请输入联系方式!",
-                            regex:/^1[34578]\d{9}$/,
-                            regexText:'温馨提示：请输入正确的联系方式',
-                            name: 'phone',
-                            id: 'sPhone',
-                            anchor: '80%'
-                            //inputType: 'password'
-                        },{
-                            xtype: 'textfield',
-                            fieldLabel: '备注', 
+                            fieldLabel: '备注',
                             allowBlank: true,
-                            blankText: "请输入联系方式!",
+                            blankText: "请输入备注!",
                             name: 'note',
                             id: 'sNote',
                             anchor: '80%'
@@ -256,16 +254,8 @@
 //                { 'name': '2', "email":"home@simpsons.com",  "phone":"555-222-1244"  },
 //                { 'name': '3', "email":"marge@simpsons.com", "phone":"555-222-1254"  },
 //                { 'name': '4', "email":"a@q.com", "phone":"44-12879"  },
-//                { 'name': '5',  "email":"lisa@simpsons.com",  "phone":"555-111-1224"  },
-//                { 'name': '6',  "email":"bart@simpsons.com",  "phone":"555-222-1234" },
-//                { 'name': '7', "email":"home@simpsons.com",  "phone":"555-222-1244"  },
-//                { 'name': '8', "email":"marge@simpsons.com", "phone":"555-222-1254"  },
-//                { 'name': '9', "email":"a@q.com", "phone":"44-12879"  },
-//                { 'name': '12',  "email":"lisa@simpsons.com",  "phone":"555-111-1224"  },
-//                { 'name': '123',  "email":"bart@simpsons.com",  "phone":"555-222-1234" },
-//                { 'name': '14', "email":"home@simpsons.com",  "phone":"555-222-1244"  },
-//                { 'name': '15', "email":"marge@simpsons.com", "phone":"555-222-1254"  },
-//                { 'name': '16', "email":"a@q.com", "phone":"44-12879"  }
+//                { 'name': '5',  "note":"lisa@simpsons.com",  "phone":"555-111-1224"  }
+                
 //            ]},
 //            proxy: {
 //                type: 'memory',
@@ -290,7 +280,7 @@
 //            height: 500,
 //            layout: 'anchor',
 //            store: Ext.data.StoreManager.lookup('simpsonsStore'),
-            //store: store,
+            store: store,
             columns: [
                 { xtype: "rownumberer", text: "序号", width:40 },//grid.panel默认不显示行号，于是要手动添加
                 {header: '姓名',  dataIndex: 'name', width:120,sortable:true }, //sortable:true 允许排序
@@ -299,7 +289,7 @@
                 {header: '生日',  dataIndex: 'bir', width:120,sortable:true },
                 {header: '班级',  dataIndex: 'cls', width:120,flex: 1,sortable:true },
                 {header: '住址',  dataIndex: 'email', width:120,flex: 1,sortable:true },
-                {header: '联系方式',  dataIndex: 'phone', width:120,flex: 1,sortable:true },
+                //{header: '联系方式',  dataIndex: 'phone', width:120,flex: 1,sortable:true },
                 {header: '备注',  dataIndex: 'note', width:120,flex: 1,sortable:true }
 
             ],
@@ -322,39 +312,54 @@
 //            console.log("123")
             //iframe调用父窗口中的OpenTab函数
             var top = window.parent;
-            top.openTab('@Url.Content("~/Student/AddStudentInfo")','50','添加学生信息')
-//
-//            top.openTab('@Url.Content("~/Student/addStudentInfo2")','studentInfoDetail','添加学生信息');
+            top.openTab('@Url.Content("~/Student/AddStudentInfo")','studentInfoDetail','添加学生信息')
         })
 
         //修改
         toolbar.items.get('mod').on('click',function () {
-//            console.log("123")
-            //iframe调用父窗口中的OpenTab函数
-            var top = window.parent;
-            top.openTab('addStudentInfo2.html','59','添加学生信息')
-//
-//            top.openTab('@Url.Content("~/Student/addStudentInfo2")','studentInfoDetail','添加学生信息');
+            var data = grid.getSelectionModel().getSelection();
+            if (data.length > 0)
+            {
+                var id = data[0].data["id"];
+                alert(id);
+                var top = window.parent;
+                top.openTab('@Url.Content("~/Student/AddStudentInfo")' + "?id=" + id +"type=1", '56', '修改学生信息')
+            }
+            @*var top = window.parent;
+            top.openTab('@Url.Content("~/Student/AddStudentInfo")' + "?id=" + id + "type=1", '56', '修改学生信息')*@
         })
 
         //删除
-        toolbar.items.get('del').on('click',function () {
-//            console.log("123")
-            //iframe调用父窗口中的OpenTab函数
-            var top = window.parent;
-            top.openTab('addStudentInfo2.html','5','添加学生信息')
-//
-//            top.openTab('@Url.Content("~/Student/addStudentInfo2")','studentInfoDetail','添加学生信息');
+        toolbar.items.get('del').on('click', function () {
+            var data = grid.getSelectionModel().getSelection();
+            Ext.onReady(function () {
+                Ext.MessageBox.confirm('提示', '确定要删除该记录吗？', callBack);
+                function callBack(id) {
+                    if (id == 'yes' && data.length == 0) {
+                        var id = data[0].data['id'];
+                        Ext.Ajax.request({
+                            url: '@Url.Content("~/Student/PostDataDel")',
+                            params: {
+                                id: id
+                            },
+                            success: function (response) {
+                                var text = response.responseText;
+                                alert(text + "已被删除")
+                            }
+                        });
+                        store.load();
+                    }
+
+                }
+            })
         })
 
         //查询
-        toolbar.items.get('sel').on('click',function () {
-//            console.log("123")
-            //iframe调用父窗口中的OpenTab函数
-            var top = window.parent;
-            top.openTab('addStudentInfo2.html','6','添加学生信息')
-//
-//            top.openTab('@Url.Content("~/Student/addStudentInfo2")','studentInfoDetail','添加学生信息');
+        toolbar.items.get('sel').on('click', function () {
+            alert("查询条件为："+Ext.encode(form.getForm().getValues()));
+
+            Ext.apply(store.proxy.extraParams, { 'jsonFilter': Ext.encode(form.getForm().getValues()) });
+            store.load();
         })
 
 

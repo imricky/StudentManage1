@@ -60,5 +60,6 @@ namespace StudentMDataAccess
         public string cls { get; set; }
         public string adr { get; set; }
         public string note { get; set; }
+        
     }
 }

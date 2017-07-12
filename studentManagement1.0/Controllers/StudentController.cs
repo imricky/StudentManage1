@@ -22,8 +22,11 @@ namespace studentManagement1._0.Controllers
         public ActionResult AddStudentInfo()
         {
             ViewBag.Message = "Your contact page.";
-
-            return View();
+            string id = System.Web.HttpContext.Current.Request.Params["id"];
+            string type = System.Web.HttpContext.Current.Request.Params["type"]; //type是干啥的？？
+            ViewBag.ID = id;
+            ViewBag.type = type;
+            return View("AddStudentInfo");
         }
 
         public string GetListAdo()
@@ -33,7 +36,7 @@ namespace studentManagement1._0.Controllers
             DataTable dt;
             if (myData != null)
             {
-                //序列化：把一个对象序列化成json格式的字符串
+                
                 Stu stu = Newtonsoft.Json.JsonConvert.DeserializeObject<Stu>(myData);
                 dt = dac.SelectData(stu);
             }
@@ -41,6 +44,7 @@ namespace studentManagement1._0.Controllers
             {
                 dt = dac.GetListAdo();
             }
+            //序列化：把一个对象序列化成json格式的字符串
             string str = JsonConvert.SerializeObject(dt);
             string data = "{total: " + dt.Rows.Count.ToString() + ",items:" + str + "}";
             return data;
