@@ -279,13 +279,15 @@
         //删除
         toolbar.items.get('del').on('click', function () {
             var data = grid.getSelectionModel().getSelection();
+            console.log(data);
             Ext.onReady(function () {
                 Ext.MessageBox.confirm('提示', '确定要删除该记录吗？', callBack);
                 function callBack(id) {
-                    if (id == 'yes' && data.length == 0) {
-                        var id = data[0].data['id'];
-                        Ext.Ajax.request({
-                            url: '@Url.Content("~/Student/PostDataDel")',
+                    if (id == 'yes' && data.length > 0) {
+                        var id = data["0"].data.id;
+                        console.log(id);
+                        Ext.Ajax.request({                            
+                            url: 'PostDataDel',
                             params: {
                                 id: id
                             },

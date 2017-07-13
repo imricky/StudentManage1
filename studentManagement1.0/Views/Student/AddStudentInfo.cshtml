@@ -145,16 +145,7 @@
             }
 
 
-            //function MsgInfo(str_msg)
-            //{
-            //    Ext.MessageBox.show({
-            //        title: '提示',
-            //        msg: str_msg,
-            //        width: 400,
-            //        icon:Ext.MessageBox.INFO,
-            //        buttons: Ext.MessageBox.OK
-            //    });
-            //}
+
 
             Ext.create('Ext.container.Viewport',{
             id: 'viewPort',
@@ -166,15 +157,15 @@
         })
 
         Ext.Ajax.request({
-            url: '@Url.Content("~/Student/PostDataGet")',
+            url: '@Url.Content("PostDataGet")',
             params: {
                 id: id
             },
             success: function (response) {
                 //alert(response.responseText);
                 console.log(response.responseText);
-                console.log(id);
-                console.log('hello')
+                //console.log(id);
+                //console.log('hello')
                 var a = form.getForm().setValues();
                 console.log(a)
                 var data = Ext.decode(response.responseText);
