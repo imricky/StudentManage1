@@ -23,9 +23,9 @@ namespace StudentMDataAccess
             DBUtil.GetNull(sql);
         }
 
-        public void AlertData(Stu stu, string id)
+        public void AlterData(Stu stu, string id)
         {
-            string sql = "update stuInfo set id ='" + stu.id + "',name='" + stu.name + "',sex='" + stu.sex + "',bir='" + stu.bir + "',cls='" + stu.cls + "',adr='" + stu.adr + "',note='" + stu.note + "where id = '" + id + "'";
+            string sql = "update stuInfo set id ='" + stu.id + "',name='" + stu.name + "',sex='" + stu.sex + "',bir='" + stu.bir + "',cls='" + stu.cls + "',adr='" + stu.adr + "',note='" + stu.note + "' where id = '" + id + "'";
             DBUtil.GetNull(sql);
         }
         //public void PostDataDel(string id)

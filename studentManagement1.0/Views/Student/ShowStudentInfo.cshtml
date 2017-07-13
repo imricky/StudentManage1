@@ -256,7 +256,6 @@
         //设置按钮事件
         //新增
         toolbar.items.get('add').on('click',function () {
-//            console.log("123")
             //iframe调用父窗口中的OpenTab函数
             var top = window.parent;
             top.openTab('@Url.Content("~/Student/AddStudentInfo")','studentInfoDetail','添加学生信息')
@@ -271,7 +270,7 @@
                 alert('选择修改的学号为：'+id);
                 var top = window.parent;
                 console.log(id);
-                top.openTab('@Url.Content("~/Student/AddStudentInfo")' + "?id=" + id + "&type=1", 'studentInfoDetail', id+'--修改学生信息')
+                top.openTab('@Url.Content("~/Student/AddStudentInfo")' + "?id=" + id + "&type=1", 'studentInfoDetail1', '--修改学生信息')
             }
             @*var top = window.parent;
             top.openTab('@Url.Content("~/Student/AddStudentInfo")' + "?id=" + id + "type=1", '56', '修改学生信息')*@

@@ -11,7 +11,7 @@ namespace DBHelper
     public class DBUtil
     {
         //private static string connStr = System.Configuration.ConfigurationManager.AppSettings["connectStr"];
-        private static string connStr = "Initial Catalog=stuManage; Integrated Security=SSPI";
+        private static string connStr = "Data Source=127.0.0.1;Initial Catalog=stuManage;User ID=sa;Password=123;Persist Security Info=True;";
         //string connSQL = "Initial Catalog=StuManage; Integrated Security=SSPI";//构造连接字符串
 
         //DbUtil是干啥的？
@@ -111,21 +111,19 @@ namespace DBHelper
             return s;       
         }
 
-        public static int GetNull(string sqlStr)
+        public static void GetNull(string sqlStr)
         {
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = connStr;
-            //int s = null;
-            int s = 0;
-            //string s = null;
             try
             {
                 conn.Open();
                 SqlCommand mycmd = new SqlCommand(sqlStr, conn);
-                s = mycmd.ExecuteNonQuery();//delete和update返回受影响的行数    返回操作所影响的记录条数         
+                mycmd.ExecuteNonQuery();//delete和update返回受影响的行数    返回操作所影响的记录条数         
             }
             catch (SqlException ex)
             {
+                //throw ex;
                 Console.WriteLine(ex.Message);
             }
             catch (Exception ex)
@@ -136,7 +134,7 @@ namespace DBHelper
             {
                 conn.Close();
             }
-            return s;
+            //return s;
             
         }
 

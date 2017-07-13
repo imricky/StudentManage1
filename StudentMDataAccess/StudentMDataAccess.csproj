@@ -52,4 +52,7 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /s /y $(TargetDir)$(TargetFileName) $(SolutionDir)studentManagement1.0\bin</PostBuildEvent>
+  </PropertyGroup>
 </Project>

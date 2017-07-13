@@ -52,15 +52,21 @@ namespace studentManagement1._0.Controllers
             string data = "{total: " + dt.Rows.Count.ToString() + ",items:" + str + "}";
             return data;
         }
-        
+
+        public void PostData(Stu stu)
+        {
+            string sql = "insert into stuInfo values ('" + stu.id + "','" + stu.name + "','" + stu.sex + "','" + stu.bir + "','" + stu.cls + "','" + stu.adr + "','" + stu.note + "')";
+            DBUtil.GetNull(sql);
+        }
+
 
         public void AlterData()
         {
             string myData = System.Web.HttpContext.Current.Request.Params["data"];
-            string id = System.Web.HttpContext.Current.Request.Params["id"];
+            string id = System.Web.HttpContext.Current.Request.Params["id"];    
             Stu stu = Newtonsoft.Json.JsonConvert.DeserializeObject<Stu>(myData);
             StudentDataAccess dac = new StudentDataAccess();
-            dac.AlertData(stu, id);
+            dac.AlterData(stu, id);
 
         }
 
