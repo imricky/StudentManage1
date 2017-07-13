@@ -12,7 +12,7 @@ namespace StudentMDataAccess
     {
         public DataTable GetListAdo()
         {
-            string sql = "selsect * from stuInfo";
+            string sql = "select * from stuInfo";
             DataTable dt = DBUtil.GetDataTable(sql);
             return dt;
         }

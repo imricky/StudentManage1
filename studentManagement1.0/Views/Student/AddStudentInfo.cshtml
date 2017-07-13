@@ -8,15 +8,16 @@
 
         var id = '@ViewBag.ID';
     //    var type = '@ViewBag.type';
-    Ext.onReady(function () {
         Ext.onReady(function() {
 
             Ext.QuickTips.init();
-            Ext.form.Field.prototype.msgTarget = 'side';
+            //Ext.form.Field.prototype.msgTarget = 'side';
 
-            var form1 = new Ext.FormPanel({
+            //var form1 = new Ext.FormPanel
+            var form = Ext.create('Ext.form.Panel',{
                 id: '5',
                 layout: 'form',
+                //renderTo: Ext.getBody(),
                 draggable: true,
                 collapsible: true,
                 autoHeight: true,
@@ -92,17 +93,6 @@
                     //inputType: 'password'
                 },{
                     xtype: 'textfield',
-                    fieldLabel: '联系方式', //第二行是密码输入框
-                    allowBlank: false,
-                    blankText: "请输入联系方式!",
-                    regex:/^1[34578]\d{9}$/,
-                    regexText:'温馨提示：请输入正确的联系方式',
-                    name: 'phone',
-                    id: 'sPhone'
-//                    anchor: '80%'
-                    //inputType: 'password'
-                },{
-                    xtype: 'textfield',
                     fieldLabel: '备注', //第二行是密码输入框
                     allowBlank: true,
                     blankText: "请输入联系方式!",
@@ -112,30 +102,61 @@
                     //inputType: 'password'
                 }],
                 buttons: [{
-                    text: "保 存"
+                    text: "保 存",
+                    id: 'save'
                     ,handler:function(){
-                        MsgInfo('保存');
+                        saveInfo();
                     }
                 }, {
-                    text: "取 消"
-                    ,handler:function(){
-                        form1.form.reset();
+                        text: "取 消",
+                        id:'cancel',
+                        handler:function(){
+                            form.form.reset();
                     }
                 }]
             });
-
-            function MsgInfo(str_msg)
-            {
-                Ext.MessageBox.show({
-                    title: '提示',
-                    msg: str_msg,
-                    width: 400,
-                    icon:Ext.MessageBox.INFO,
-                    buttons: Ext.MessageBox.OK
-                });
+            //点击保存按钮
+            function saveInfo() {
+                console.log("2123");
+                type = 0;
+                if (type == 1) {
+                    Ext.Ajax.request({
+                        url: '@Url.Content("~/Student/AlterData")',
+                        params: {
+                            id: id,
+                            data: Ext.encode(form.getForm().getValues())
+                        },
+                        success: function (response) {
+                            var text = response.responseText;
+                        }
+                    });
+                } else {
+                    alert(Ext.encode(form.getForm().getValues()));
+                    Ext.Ajax.request({
+                        url: '@Url.Content("~/Student/PostData")',
+                        params: {                           
+                            data: Ext.encode(form.getForm().getValues())
+                        },
+                        success: function (response) {
+                            var text = response.responseText;
+                        }
+                    })
+                }
             }
-        });
-        Ext.create('Ext.container.Viewport',{
+
+
+            //function MsgInfo(str_msg)
+            //{
+            //    Ext.MessageBox.show({
+            //        title: '提示',
+            //        msg: str_msg,
+            //        width: 400,
+            //        icon:Ext.MessageBox.INFO,
+            //        buttons: Ext.MessageBox.OK
+            //    });
+            //}
+
+            Ext.create('Ext.container.Viewport',{
             id: 'viewPort',
             style : 'background-image:url(../images/studentInfo.jpg);background-repeat: no-repeat;filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=\'scale\')";-moz-background-size:100% 100%;background-size:100% 100%;',
             layout: 'border',
@@ -143,7 +164,33 @@
                 toolbar
             ]
         })
-    })
+
+        Ext.Ajax.request({
+            url: '@Url.Content("~/Student/PostDataGet")',
+            params: {
+                id: id
+            },
+            success: function (response) {
+                //alert(response.responseText);
+                console.log(response.responseText);
+                console.log(id);
+                console.log('hello')
+                var a = form.getForm().setValues();
+                console.log(a)
+                var data = Ext.decode(response.responseText);
+                form.getForm().setValues(data[0]);
+            }
+            })
+
+
+
+
+
+            //Ext.onReady() end
+     });
+
+
+
 
 
 

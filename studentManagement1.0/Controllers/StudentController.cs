@@ -51,7 +51,6 @@ namespace studentManagement1._0.Controllers
             string str = JsonConvert.SerializeObject(dt);
             string data = "{total: " + dt.Rows.Count.ToString() + ",items:" + str + "}";
             return data;
-
         }
         
 

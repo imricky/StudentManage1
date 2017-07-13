@@ -12,7 +12,7 @@ namespace DBHelper
     {
         //private static string connStr = System.Configuration.ConfigurationManager.AppSettings["connectStr"];
         private static string connStr = "Initial Catalog=stuManage; Integrated Security=SSPI";
-
+        //string connSQL = "Initial Catalog=StuManage; Integrated Security=SSPI";//构造连接字符串
 
         //DbUtil是干啥的？
         public void DbUtil()
@@ -58,7 +58,7 @@ namespace DBHelper
         //第二个是ExecuteReader()方法，主要用来提交SELECT语句，返回值是一个数据流，里面是SELECT语句的查询结果，可以用SqlDataReader对象来接收，然后调用其Read()方法来逐行读出查询结果
         //第三个是ExexuteScalar()方法，主要也是用来提交SELECT语句，但是其返回值是查询结果的第一行第一列，所以适用于例如COUNT等聚合查询。
         public static DataTable GetDataTable(string sqlStr)
-        {
+        {                    
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = connStr;
             DataTable dt = new DataTable();
@@ -66,8 +66,6 @@ namespace DBHelper
             {
                 conn.Open();
                 SqlCommand mycmd = new SqlCommand(sqlStr, conn);
-                //mycmd.EndExecuteNonQuery();//delete和update
-                //string s = mycmd.ExecuteScalar().ToString(); //select id from student
                 SqlDataAdapter ad = new SqlDataAdapter(mycmd);
                 ad.Fill(dt);
             }

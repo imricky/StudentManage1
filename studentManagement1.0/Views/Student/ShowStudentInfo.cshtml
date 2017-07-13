@@ -107,8 +107,8 @@
         var states = Ext.create('Ext.data.Store', {
             fields: ['abbr', 'name'],
             data : [
-                {"abbr":"male", "name":"男"},
-                {"abbr":"famale", "name":"女"}
+                {"abbr":"1", "name":"男"},
+                {"abbr":"0", "name":"女"}
 
 
             ]
@@ -212,20 +212,7 @@
                             id: 'sAdd',
                             anchor: '80%'
                             //inputType: 'password'
-                            },
-                        //    {
-                        //    xtype: 'textfield',
-                        //    fieldLabel: '联系方式',
-                        //    allowBlank: false,
-                        //    blankText: "请输入联系方式!",
-                        //    regex:/^1[34578]\d{9}$/,
-                        //    regexText:'温馨提示：请输入正确的联系方式',
-                        //    name: 'phone',
-                        //    id: 'sPhone',
-                        //    anchor: '80%'
-                        //    //inputType: 'password'
-                        //},
-                        {
+                            },{
                             xtype: 'textfield',
                             fieldLabel: '备注',
                             allowBlank: true,
@@ -233,7 +220,6 @@
                             name: 'note',
                             id: 'sNote',
                             anchor: '80%'
-                            //inputType: 'password'
                         }]
                     }]
             }],
@@ -241,45 +227,8 @@
         });
 
         //建立中心信息表格：
-//         var store = Ext.create('Ext.data.Store', {
-//            storeId:'simpsonsStore',
-//             autoLoad: false,
-//            fields:['name', 'email', 'phone'],
-////             totalProperty:'totalCount',
-
-//             pageSize: itemsPerPage, // items per page
-//            data:{'items':[
-//                { 'name': 'Lisa',  "email":"lisa@simpsons.com",  "phone":"555-111-1224"  },
-//                { 'name': '1',  "email":"bart@simpsons.com",  "phone":"555-222-1234" },
-//                { 'name': '2', "email":"home@simpsons.com",  "phone":"555-222-1244"  },
-//                { 'name': '3', "email":"marge@simpsons.com", "phone":"555-222-1254"  },
-//                { 'name': '4', "email":"a@q.com", "phone":"44-12879"  },
-//                { 'name': '5',  "note":"lisa@simpsons.com",  "phone":"555-111-1224"  }
-                
-//            ]},
-//            proxy: {
-//                type: 'memory',
-//                reader: {
-//                    type: 'json',
-//                    root: 'items'
-//                }
-//            }
-//        });
-//        store.loadPage(1);
-        //store.load({
-        //    params:{
-        //        start:0,
-        //        limit: itemsPerPage
-        //    }
-        //});
-
         var grid = Ext.create('Ext.grid.Panel', {
-//            title: 'Simpsons',
-//            layout:'border',
             region:'center',
-//            height: 500,
-//            layout: 'anchor',
-//            store: Ext.data.StoreManager.lookup('simpsonsStore'),
             store: store,
             columns: [
                 { xtype: "rownumberer", text: "序号", width:40 },//grid.panel默认不显示行号，于是要手动添加
@@ -288,14 +237,12 @@
                 {header: '性别',  dataIndex: 'sex', width:120,sortable:true },
                 {header: '生日',  dataIndex: 'bir', width:120,sortable:true },
                 {header: '班级',  dataIndex: 'cls', width:120,flex: 1,sortable:true },
-                {header: '住址',  dataIndex: 'email', width:120,flex: 1,sortable:true },
-                //{header: '联系方式',  dataIndex: 'phone', width:120,flex: 1,sortable:true },
+                {header: '住址',  dataIndex: 'adr', width:120,flex: 1,sortable:true },
                 {header: '备注',  dataIndex: 'note', width:120,flex: 1,sortable:true }
-
             ],
             dockedItems: [{
                 xtype: 'pagingtoolbar',
-                //store: store,   // same store GridPanel is using
+                store: store,   // same store GridPanel is using
                 dock: 'bottom',
                 displayInfo: true
             }],
