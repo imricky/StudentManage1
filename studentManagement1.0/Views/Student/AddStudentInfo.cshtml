@@ -88,8 +88,8 @@
                     fieldLabel: '住址', //第二行是密码输入框
                     allowBlank: false,
                     blankText: "请输入住址!",
-                    name: 'adr',
-                    id: 'sAdd'
+                    name: 'adr1',
+                    id: 'adr'
 //                    anchor: '80%'
                     //inputType: 'password'
                 },{
@@ -139,6 +139,7 @@
                         },
                         success: function (response) {
                             var text = response.responseText;
+                            console.log("成功啦!");
                         }
                     })
                     alert(Ext.encode(form.getForm().getValues()));
