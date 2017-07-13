@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.Data;
 using Newtonsoft.Json;
 using StudentMDataAccess;
+using DBHelper;
 
 namespace studentManagement1._0.Controllers
 {
@@ -15,6 +16,8 @@ namespace studentManagement1._0.Controllers
         public ActionResult ShowStudentInfo()
         {
             ViewBag.Message = "Your contact page.";
+            //DBUtil b = new DBUtil();
+            //b.connectTestW();
 
             return View();
         }
@@ -50,6 +53,7 @@ namespace studentManagement1._0.Controllers
             return data;
 
         }
+        
 
         public void AlterData()
         {
