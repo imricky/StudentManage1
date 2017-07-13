@@ -268,9 +268,10 @@
             if (data.length > 0)
             {
                 var id = data[0].data["id"];
-                alert(id);
+                alert('选择修改的学号为：'+id);
                 var top = window.parent;
-                top.openTab('@Url.Content("~/Student/AddStudentInfo")' + "?id=" + id +"type=1", '56', '修改学生信息')
+                console.log(id);
+                top.openTab('@Url.Content("~/Student/AddStudentInfo")' + "?id=" + id + "&type=1", 'studentInfoDetail', id+'--修改学生信息')
             }
             @*var top = window.parent;
             top.openTab('@Url.Content("~/Student/AddStudentInfo")' + "?id=" + id + "type=1", '56', '修改学生信息')*@
@@ -279,13 +280,13 @@
         //删除
         toolbar.items.get('del').on('click', function () {
             var data = grid.getSelectionModel().getSelection();
-            console.log(data);
+            //console.log(data);
             Ext.onReady(function () {
                 Ext.MessageBox.confirm('提示', '确定要删除该记录吗？', callBack);
-                function callBack(id) {
-                    if (id == 'yes' && data.length > 0) {
-                        var id = data["0"].data.id;
-                        console.log(id);
+                function callBack(msg) {
+                    if (msg == 'yes' && data.length > 0) {
+                        var id = data[0].data.id;
+                        //console.log(id);
                         Ext.Ajax.request({                            
                             url: 'PostDataDel',
                             params: {

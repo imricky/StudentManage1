@@ -111,16 +111,18 @@ namespace DBHelper
             return s;       
         }
 
-        public static void GetNull(string sqlStr)
+        public static int GetNull(string sqlStr)
         {
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = connStr;
+            //int s = null;
+            int s = 0;
             //string s = null;
             try
             {
                 conn.Open();
                 SqlCommand mycmd = new SqlCommand(sqlStr, conn);
-                mycmd.ExecuteNonQuery();//delete和update返回受影响的行数    返回操作所影响的记录条数         
+                s = mycmd.ExecuteNonQuery();//delete和update返回受影响的行数    返回操作所影响的记录条数         
             }
             catch (SqlException ex)
             {
@@ -134,6 +136,7 @@ namespace DBHelper
             {
                 conn.Close();
             }
+            return s;
             
         }
 

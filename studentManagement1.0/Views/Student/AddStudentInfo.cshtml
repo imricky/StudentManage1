@@ -7,7 +7,7 @@
     <script>
 
         var id = '@ViewBag.ID';
-    //    var type = '@ViewBag.type';
+        var type = '@ViewBag.type';
         Ext.onReady(function() {
 
             Ext.QuickTips.init();
@@ -15,7 +15,7 @@
 
             //var form1 = new Ext.FormPanel
             var form = Ext.create('Ext.form.Panel',{
-                id: '5',
+                //id: '5',
                 layout: 'form',
                 //renderTo: Ext.getBody(),
                 draggable: true,
@@ -58,13 +58,14 @@
                 },{
                     fieldLabel: '性别'
                     ,xtype:'radiogroup'
-                    ,name:'Radios' //性别的name先没有设置  -> sex
+                    ,name:'sex' //性别的name先没有设置  -> sex
                     ,items:[
-                        {name : 'RadioItems',boxLabel:'男',inputValue:'1',checked:true},
-                        {name : 'RadioItems',boxLabel:'女',inputValue:'0'}
+                        {name : 'sex',boxLabel:'男',inputValue:'1',checked:true},
+                        {name : 'sex',boxLabel:'女',inputValue:'0'}
                     ]
                 },{
-                    xtype: 'datefield',
+                    //xtype: 'datefield',
+                    xtype: 'textfield',
                     fieldLabel: '出生年月', //第一行是用户名输入框
                     allowBlank: false,
                     editable : false,
@@ -87,7 +88,7 @@
                     fieldLabel: '住址', //第二行是密码输入框
                     allowBlank: false,
                     blankText: "请输入住址!",
-                    name: 'add',
+                    name: 'adr',
                     id: 'sAdd'
 //                    anchor: '80%'
                     //inputType: 'password'
@@ -118,10 +119,10 @@
             //点击保存按钮
             function saveInfo() {
                 console.log("2123");
-                type = 0;
+                //type = 0;
                 if (type == 1) {
                     Ext.Ajax.request({
-                        url: '@Url.Content("~/Student/AlterData")',
+                        url: 'AlterData',
                         params: {
                             id: id,
                             data: Ext.encode(form.getForm().getValues())
@@ -130,17 +131,17 @@
                             var text = response.responseText;
                         }
                     });
-                } else {
-                    alert(Ext.encode(form.getForm().getValues()));
-                    Ext.Ajax.request({
-                        url: '@Url.Content("~/Student/PostData")',
-                        params: {                           
+                } else {                    
+                    Ext.Ajax.request({                       
+                        url: 'PostData',
+                        params: {
                             data: Ext.encode(form.getForm().getValues())
                         },
                         success: function (response) {
                             var text = response.responseText;
                         }
                     })
+                    alert(Ext.encode(form.getForm().getValues()));
                 }
             }
 

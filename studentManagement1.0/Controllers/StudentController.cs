@@ -26,7 +26,7 @@ namespace studentManagement1._0.Controllers
         {
             ViewBag.Message = "Your contact page.";
             string id = System.Web.HttpContext.Current.Request.Params["id"];
-            string type = System.Web.HttpContext.Current.Request.Params["type"]; //type是干啥的？？
+            string type = System.Web.HttpContext.Current.Request.Params["type"]; //type是判断是修改还是新增
             ViewBag.ID = id;
             ViewBag.type = type;
             return View("AddStudentInfo");
