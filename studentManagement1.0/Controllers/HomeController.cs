@@ -60,37 +60,37 @@ namespace studentManagement1._0.Controllers
     //}
 
     //课程控制器
-    public class CourseController : Controller
-    {
-        public ActionResult ShowCourseInfo()
-        {
-            ViewBag.Message = "Your contact page.";
-            return View();
-        }
+    //public class CourseController : Controller
+    //{
+    //    public ActionResult ShowCourseInfo()
+    //    {
+    //        ViewBag.Message = "Your contact page.";
+    //        return View();
+    //    }
 
-        public ActionResult AddCourseInfo()
-        {
-            ViewBag.Message = "Your contact page.";
-            return View();
-        }
-    }
+    //    public ActionResult AddCourseInfo()
+    //    {
+    //        ViewBag.Message = "Your contact page.";
+    //        return View();
+    //    }
+    //}
 
 
     //成绩信息控制器
-    public class GradeController : Controller
-    {
-        public ActionResult ShowGradeInfo()
-        {
-            ViewBag.Message = "Your contact page.";
-            return View();
-        }
+    //public class GradeController : Controller
+    //{
+    //    public ActionResult ShowGradeInfo()
+    //    {
+    //        ViewBag.Message = "Your contact page.";
+    //        return View();
+    //    }
 
-        public ActionResult AddGradeInfo()
-        {
-            ViewBag.Message = "Your contact page.";
-            return View();
-        }
-    }
+    //    public ActionResult AddGradeInfo()
+    //    {
+    //        ViewBag.Message = "Your contact page.";
+    //        return View();
+    //    }
+    //}
 
 
 }

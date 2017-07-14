@@ -88,8 +88,8 @@
                     fieldLabel: '住址', //第二行是密码输入框
                     allowBlank: false,
                     blankText: "请输入住址!",
-                    name: 'adr1',
-                    id: 'adr'
+                    name: 'adr',
+                    id: 'sadr'
 //                    anchor: '80%'
                     //inputType: 'password'
                 },{
@@ -107,6 +107,7 @@
                     id: 'save'
                     ,handler:function(){
                         saveInfo();
+                        alert("成功啦!")
                     }
                 }, {
                         text: "取 消",
