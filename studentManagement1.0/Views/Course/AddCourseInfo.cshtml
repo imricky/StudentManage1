@@ -5,20 +5,18 @@
 @section addcourse{
     <script>
 
-    //    var id = '@ViewBag.ID';
-    //    var type = '@ViewBag.type';
+        var id = '@ViewBag.ID';
+        var type = '@ViewBag.type';
     Ext.onReady(function () {
-        var states = Ext.create('Ext.data.Store', {
-            fields: ['abbr', 'name'],
-            data : [
-                {"abbr":"male", "name":"男"},
-                {"abbr":"famale", "name":"女"}
+        //var states = Ext.create('Ext.data.Store', {
+        //    fields: ['abbr', 'name'],
+        //    data : [
+        //        {"abbr":"male", "name":"男"},
+        //        {"abbr":"famale", "name":"女"}
+        //    ]
+        //});
 
-
-            ]
-        });
-
-        var form1 = new Ext.FormPanel({
+        var form = new Ext.FormPanel({
             layout: 'form',
 //            style : 'background-image:url(../images/studentGrade.jpg);background-repeat: no-repeat;filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=\'scale\')";-moz-background-size:100% 100%;background-size:100% 100%;',
             collapsible: true,
@@ -28,8 +26,7 @@
             frame: true,
             renderTo: Ext.getBody(),
             title: '<center style="curor:hand" onclick="window.location.reload();">课程信息表-编辑</center>',
-            style: 'margin-left:auto;margin-right:auto;width:500px;margin-top:200px;',
-
+            style: 'margin-left:auto;margin-right:auto;width:500px;margin-top:20px;',
             //设置标签对齐方式
             labelAlign: 'right',
             //设置标签宽
@@ -42,26 +39,26 @@
             },
             items: [{
                 fieldLabel: '课程号'
-                ,name:'courseID'
+                ,name:'kch'
                 ,xtype:'textfield'
             },{
                 fieldLabel: '课程名'
-                ,name:'courseName'
+                ,name:'kcm'
                 ,xtype:'textfield'
             },{
                 fieldLabel: '及格分数'
-                ,name:'courseAch'
+                ,name:'ach'
                 ,xtype:'numberfield'
             },{
                 fieldLabel: '备注'
-                ,name:'courseNote'
+                ,name:'remarks'
                 ,xtype:'textfield'
             }],
             buttons: [{
                 text: "添 加",
-                id: 'save'
+                id: 'add'
                 ,handler:function(){
-                    MsgInfo('保存');
+                    MsgInfo();
                 }
             }, {
                 text: "取 消",
@@ -72,17 +69,49 @@
             }]
         });
 
-        function MsgInfo(str_msg)
+        function MsgInfo()
         {
-            Ext.MessageBox.show({
-                title: '提示',
-                msg: str_msg,
-                width: 400,
-                icon:Ext.MessageBox.INFO,
-                buttons: Ext.MessageBox.OK
-            });
+           if (type == 1) {
+                Ext.Ajax.request({
+                    url: '@Url.Content("~/Course/AlterData")',
+                    params: {
+                        id: id,
+                        data: Ext.encode(form.getForm().getValues())
+                    },
+                    success: function (response) {
+                        var text = response.responseText;
+                        alert('修改成功');
+                    }
+                });
+            } else {
+                Ext.Ajax.request({
+                    url: '@Url.Content("~/Course/PostData")',
+                    params: {
+                        //id: 1,
+                        data: Ext.encode(form.getForm().getValues())
+                        //data: '{name:"wei",age:23}'
+                    },
+                    success: function (response) {
+                        var text = response.responseText;
+                        alert('添加成功');
+                    }
+               });
+                alert(Ext.encode(form.getForm().getValues()));
+            }
         }
 
+        Ext.Ajax.request({
+            url: '@Url.Content("~/Course/PostDataGet")',
+            params: {
+                id: id
+            },
+            success: function (response) {
+                alert(response.responseText);
+                var data = Ext.decode(response.responseText);
+                form.getForm().setValues(data[0]);
+                // alert( Ext.encode(form.getForm().getValues()));
+            }
+        })
 
         Ext.create('Ext.container.Viewport',{
             id: 'viewPort',
@@ -94,9 +123,6 @@
         })
         })
 
-        //toolbar.buttons.get("save").on("click", function () {
-        //    console.log("123465")
-        //})
 
 
 

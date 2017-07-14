@@ -18,7 +18,7 @@ namespace StudentMDataAccess
         }
         public void PostData(Cou cou)
         {
-            string sql = "insert into courseInfo values('" + cou.kch + "','" + cou.kcm + "','" + cou.ach + "','" + cou.remarks + "')";
+            string sql = "insert into courseInfo values ('" + cou.kch + "','" + cou.kcm + "','" + cou.ach + "','" + cou.remarks + "')";
             DBUtil.GetNull(sql);
         }
 

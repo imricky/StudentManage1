@@ -8,33 +8,27 @@
     //    左边的树
     Ext.onReady(function () {
         Ext.QuickTips.init();
-//        renderTo: Ext.getBody();
         var itemsPerPage = 2;//分页器
 
         //建立数据模型
-
-        //courseID: 课程号码
-        //courseName: 课程名字
-        //courseAch: 及格分数
-        //courseNote: 备注
-        Ext.define('gradeModel',{
-            extend:'Ext.data.Model',
+        Ext.define('courseModel', {
+            extend: 'Ext.data.Model',
             fields: [{
-                name: 'courseID',
+                name: 'kch',
                 type: 'string',
-                mapping: 'courseID'
-            },{
-                name: 'courseName',
+                mapping: 'kch'
+            }, {
+                name: 'kcm',
                 type: 'string',
-                mapping: 'courseName'
-            },{
-                name: 'courseAch',
+                mapping: 'kcm'
+            }, {
+                name: 'ach',
                 type: 'int',
-                mapping: 'courseAch'
-            },{
-                name: 'courseNote',
+                mapping: 'ach'
+            }, {
+                name: 'remarks',
                 type: 'string',
-                mapping: 'courseNote'
+                mapping: 'remarks'
             }]
         });
         Ext.define('idModel',{
@@ -61,7 +55,7 @@
                     id:'del',
                     text: '删除'
                 },{
-                    id:'mod',
+                    id:'alter',
                     text: '修改'
                 },{
                     id:'sel',
@@ -89,17 +83,31 @@
             ]
         });
 
+        var store = Ext.create('Ext.data.Store', {
+            model: 'courseModel',
+            autoLoad: true,
+            pageSize: itemsPerPage, // items per page
+            proxy: {
+                type: 'ajax',
+                url: 'GetListAdo',
+                reader: {
+                    type: 'json',
+                    root: 'items',
+                    totalProperty: 'total'
+                }
+            }
+        });
 
-        var grid = Ext.create('Ext.grid.Panel',{
+
+        var grid = Ext.create('Ext.grid.Panel', {
             region: 'center',
             store: store,
             columns: [
-                { xtype: "rownumberer", text: "序号", width:40 },//grid.panel默认不显示行号，于是要手动添加
-                //sortable:true 允许排序
-                {header: '课程号',  dataIndex: 'courseID', width:120,sortable:true },
-                {header: '课程名',  dataIndex: 'courseName', width:120,sortable:true },
-                {header: '及格分数',  dataIndex: 'courseAch', width:120,sortable:true },
-                {header: '备注',  dataIndex: 'courseNote', width:120,sortable:true,flex:1 }
+                { xtype: "rownumberer", text: "序号", width: 40 },//grid.panel默认不显示行号，于是要手动添加
+                { header: '课程号', dataIndex: 'kch', width: 180, sortable: true },
+                { header: '课程名', dataIndex: 'kcm', width: 180, sortable: true },
+                { header: '及格分数', dataIndex: 'ach', width: 100, sortable: true },
+                { header: '备注', dataIndex: 'remarks', flex: 1, sortable: true }
             ],
             dockedItems: [{
                 xtype: 'pagingtoolbar',
@@ -109,6 +117,8 @@
             }],
             renderTo: Ext.getBody()
         });
+
+
 
 
         var form =  Ext.create('Ext.form.Panel', {
@@ -136,12 +146,12 @@
                         fieldLabel: '课程号',
                         anchor: '95%',
 //                        emptyText : '请输入课程号，必须',
-                        name: 'courseID'
+                        name: 'kch'
                     },{
                         fieldLabel: '课程名',
 //                        emptyText : '请输入课程名，必须',
                         anchor: '95%',
-                        name: 'courseName'
+                        name: 'kcm'
                     }]
 
                 },{
@@ -152,12 +162,12 @@
                     defaultType: 'textfield',
                     items: [{
                         fieldLabel: '及格分数',
-                        name: 'courseAch',
+                        name: 'ach',
                         value: 0,
                         anchor: '95%'
                     },{
                         fieldLabel: '备注',
-                        name: 'courseNote',
+                        name: 'remarks',
 //                        placeholder: 'qing',
                         emptyText : '请输入备注，可不填',
                         anchor: '95%'
@@ -190,80 +200,53 @@
             ]
         });
 
-
-        //建立数据存储
-        var store = Ext.create('Ext.data.Store', {
-            storeId:'simpsonsStore',
-            autoLoad: false,
-            fields:['name', 'email', 'phone'],
-//             totalProperty:'totalCount',
-
-            pageSize: itemsPerPage, // items per page
-            data:{'items':[
-                { 'name': 'Lisa',  "ach1":"lisa@simpsons.com",  "ach2":"555-111-1224"  },
-                { 'name': '1',  "email":"bart@simpsons.com",  "phone":"555-222-1234" },
-                { 'name': '2', "email":"home@simpsons.com",  "phone":"555-222-1244"  },
-                { 'name': '3', "email":"marge@simpsons.com", "phone":"555-222-1254"  },
-                { 'name': '4', "email":"a@q.com", "phone":"44-12879"  },
-                { 'name': '5',  "email":"lisa@simpsons.com",  "phone":"555-111-1224"  },
-                { 'name': '6',  "email":"bart@simpsons.com",  "phone":"555-222-1234" },
-                { 'name': '7', "email":"home@simpsons.com",  "phone":"555-222-1244"  },
-                { 'name': '8', "email":"marge@simpsons.com", "phone":"555-222-1254"  },
-                { 'name': '9', "email":"a@q.com", "phone":"44-12879"  },
-                { 'name': '12',  "email":"lisa@simpsons.com",  "phone":"555-111-1224"  },
-                { 'name': '123',  "email":"bart@simpsons.com",  "phone":"555-222-1234" },
-                { 'name': '14', "email":"home@simpsons.com",  "phone":"555-222-1244"  },
-                { 'name': '15', "email":"marge@simpsons.com", "phone":"555-222-1254"  },
-                { 'name': '16', "email":"a@q.com", "phone":"44-12879"  }
-            ]},
-            proxy: {
-                type: 'memory',
-                reader: {
-                    type: 'json',
-                    root: 'items'
-                }
-            }
-        });
-
-                        //设置按钮事件
+         //设置按钮事件
         //新增
         toolbar.items.get('add').on('click',function () {
-//            console.log("123")
-            //iframe调用父窗口中的OpenTab函数
-            var top = window.parent;
-            top.openTab('@Url.Content("~/Course/AddCourseInfo")','50','添加学生信息')
-//
-//            top.openTab('@Url.Content("~/Student/addStudentInfo2")','studentInfoDetail','添加学生信息');
+                var top = window.parent;
+
+                top.openTab('@Url.Content("~/Course/AddCourseInfo")', 'StudentInfoDetail', '添加课程信息');
         })
 
         //修改
-        toolbar.items.get('mod').on('click',function () {
-//            console.log("123")
-            //iframe调用父窗口中的OpenTab函数
-            var top = window.parent;
-            top.openTab('addStudentInfo2.html','59','添加学生信息')
-//
-//            top.openTab('@Url.Content("~/Student/addStudentInfo2")','studentInfoDetail','添加学生信息');
+        toolbar.items.get('alter').on('click',function () {
+                var data = grid.getSelectionModel().getSelection();
+                //alert(data);
+                if (data.length > 0) {
+                    var id = data[0].data['kch'];
+                    var top = window.parent;
+                    alert('您修改的课程号为：'+id);
+                    top.openTab('@Url.Content("~/Course/AddCourseInfo")' + "?id=" + id + "&type=1", 'StudentInfoDetail1', '修改课程信息');
+
+                }
         })
 
         //删除
         toolbar.items.get('del').on('click',function () {
-//            console.log("123")
-            //iframe调用父窗口中的OpenTab函数
-            var top = window.parent;
-            top.openTab('addStudentInfo2.html','5','添加学生信息')
-//
-//            top.openTab('@Url.Content("~/Student/addStudentInfo2")','studentInfoDetail','添加学生信息');
+                var data = grid.getSelectionModel().getSelection();
+                if (data.length > 0) {
+                    var kch = data[0].data['kch'];
+                    alert(kch);
+                    Ext.Ajax.request({
+                        url: '@Url.Content("~/Course/PostDataDel")',
+                        params: {
+                            kch: kch
+                        },
+                        success: function (response) {
+                            var text = response.responseText;
+                            alert('成功了！');
+                        }
+                    });
+                }
+                store.load();
+
         })
 
         //查询
         toolbar.items.get('sel').on('click',function () {
-//            console.log("123")
-            //iframe调用父窗口中的OpenTab函数
-            var top = window.parent;
-            top.openTab('addStudentInfo2.html','6','添加学生信息')
-//
-//            top.openTab('@Url.Content("~/Student/addStudentInfo2")','studentInfoDetail','添加学生信息');
+            alert(Ext.encode(form.getForm().getValues()));
+            Ext.apply(store.proxy.extraParams, { 'jsonFilter': Ext.encode(form.getForm().getValues()) });
+            store.load();
         })
 
 

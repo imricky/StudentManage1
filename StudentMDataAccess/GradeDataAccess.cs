@@ -12,7 +12,7 @@ namespace StudentMDataAccess
     {
         public DataTable GetListAdo()
         {
-            string sql = "select stuInfo.id as 'id',stuInfo.name as 'name',sum(case courseInfo.kch when '1' then gradeInfo.ach else 0 end) as 'ach1',sum(case courseInfo.kch when '2' then gradeInfo.ach else 0 end) as 'ach2',sum(case courseInfo.kch when '3' then gradeInfo.ach else 0 end) as 'ach3',sum(case courseInfo.kch when '4' then gradeInfo.ach else 0 end) as 'ach4',sum(case courseInfo.kch when '5' then gradeInfo.ach else 0 end) as 'ach5' from gradeInfo,studentInfo,courseInfo where (gradeInfo.id = studentInfo.id) and (gradeInfo.kch = courseInfo.kch) group by studentInfo.id,studentInfo.name";
+            string sql = "select stuInfo.id as 'id',stuInfo.name as 'name',sum(case courseInfo.kch when '1' then gradeInfo.ach else 0 end) as 'ach1',sum(case courseInfo.kch when '2' then gradeInfo.ach else 0 end) as 'ach2',sum(case courseInfo.kch when '3' then gradeInfo.ach else 0 end) as 'ach3',sum(case courseInfo.kch when '4' then gradeInfo.ach else 0 end) as 'ach4',sum(case courseInfo.kch when '5' then gradeInfo.ach else 0 end) as 'ach5' from gradeInfo,studentInfo,courseInfo where (gradeInfo.id = studentInfo.id) and (gradeInfo.kch = courseInfo.kch) group by stuInfo.id,stuInfo.name";
             DataTable dt = DBUtil.GetDataTable(sql);
             return dt;
         }
