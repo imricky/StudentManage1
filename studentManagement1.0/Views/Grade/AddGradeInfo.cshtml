@@ -5,26 +5,81 @@
 @section addgrade{
     <script>
 
-    //    var id = '@ViewBag.ID';
-    //    var type = '@ViewBag.type';
+        var id = '@ViewBag.ID';
+        var type = '@ViewBag.type';
     Ext.onReady(function () {
         var states = Ext.create('Ext.data.Store', {
             fields: ['abbr', 'name'],
             data : [
                 {"abbr":"male", "name":"男"},
                 {"abbr":"famale", "name":"女"}
-
-
             ]
         });
 
-        var form1 = new Ext.FormPanel({
-            layout: 'form',
-//            style : 'background-image:url(./images/studentGrade.jpg);background-repeat: no-repeat;filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=\'scale\')";-moz-background-size:100% 100%;background-size:100% 100%;',
-//            collapsible: true,
-            autoHeight: true,
 
-//            marginTop: '50px',
+        Ext.Ajax.request({
+            url: '@Url.Content("~/Grade/PostDataGet")',
+            params: {
+                id: id
+            },
+            success: function (response) {
+                alert(response.responseText);
+                var data = Ext.decode(response.responseText);
+                form.getForm().setValues(data[0]);
+                // alert( Ext.encode(form.getForm().getValues()));
+            }
+        });
+
+        Ext.define('idModel', {
+            extend: 'Ext.data.Model',
+            fields: [{
+                name: 'id',
+                type: 'string',
+                mapping: 'id'
+            }]
+        });
+
+        var states = Ext.create('Ext.data.Store', {
+            model: 'idModel',
+            autoLoad: true,
+            proxy: {
+                type: 'ajax',
+                url: 'GetStuId',
+                reader: {
+                    type: 'json',
+                    root: 'items',
+                    totalProperty: 'total'
+                }
+            }
+        });
+
+        Ext.define('kchModel', {
+            extend: 'Ext.data.Model',
+            fields: [{
+                name: 'kch',
+                type: 'string',
+                mapping: 'kch'
+            }]
+        });
+
+        var states2 = Ext.create('Ext.data.Store', {
+            model: 'kchModel',
+            autoLoad: true,
+            proxy: {
+                type: 'ajax',
+                url: 'GetCouKch',
+                reader: {
+                    type: 'json',
+                    root: 'items',
+                    totalProperty: 'total'
+                }
+            }
+        });
+
+
+        var form = new Ext.FormPanel({
+            layout: 'form',
+            autoHeight: true,
             frame: true,
             renderTo: Ext.getBody(),
             title: '<center style="curor:hand" onclick="window.location.reload();">学生成绩表-编辑</center>',
@@ -42,97 +97,69 @@
             },
             items: [{
                 fieldLabel: '学号',
-                name: 'DropDownList',
+                name: 'id',
                 xtype: 'combo',
-                //本地数据源  local/remote
-                mode:'local',
-                //设置为选项的text的字段
-                displayField: "Name",
-                //设置为选项的value的字段
-                valueField: "Id",
-                //是否可以输入，还是只能选择下拉框中的选项
-                editable : false,
-                typeAhead: true,
-                //必须选择一项
-                //forceSelection: true,
-                //输入部分选项内容匹配的时候显示所有的选项
-                triggerAction: 'all',
-                //selectOnFocus:true,
-                //数据
-                store:new Ext.data.SimpleStore({
-                    fields: ['Id', 'Name'],
-                    data: [  [1,'男'],[0,'女'] ]
-                })
+                store: states,
+                displayField: "id",
+                valueField: "id",
+                queryMode: 'local',
             },{
                 fieldLabel: '课程号',
-                name: 'DropDownList',
+                store: states2,
+                name: 'kch',
                 xtype: 'combo',
-                //本地数据源  local/remote
-                mode:'local',
-                //设置为选项的text的字段
-                displayField: "Name",
-                //设置为选项的value的字段
-                valueField: "Id",
-                //是否可以输入，还是只能选择下拉框中的选项
-                editable : false,
-                typeAhead: true,
-                //必须选择一项
-                //forceSelection: true,
-                //输入部分选项内容匹配的时候显示所有的选项
-                triggerAction: 'all',
-                //selectOnFocus:true,
-                //数据
-                store:new Ext.data.SimpleStore({
-                    fields: ['Id', 'Name'],
-                    data: [  [1,'男'],[0,'女'] ]
-                })
+                queryMode:'local',
+                displayField: "kch",
+                valueField: "id",
+
             },{
                 fieldLabel: '分数'
-                ,name:'TextBoxNumber'
+                ,name:'ach'
                 ,xtype:'numberfield'
-                //,allowDecimals: false     // 允许小数点
-                //,allowNegative: false,     // 允许负数
-                //,maxValue:1000      //最大值
-                //,minValue:0            //最小值
             }],
             buttons: [{
                 text: "添 加",
                 id: 'add'
                 ,handler:function(){
-                    MsgInfo('保存');
+                    MsgInfo();
                 }
             }, {
                 text: "取 消",
                 id: 'cel'
                 ,handler:function(){
-                    form1.form.reset();
+                    form.form.reset();
                 }
             }]
         });
 
-        function MsgInfo(str_msg)
-        {
-            Ext.MessageBox.show({
-                title: '提示',
-                msg: str_msg,
-                width: 400,
-                icon:Ext.MessageBox.INFO,
-                buttons: Ext.MessageBox.OK
-            });
+        function MsgInfo(str_msg) {
+            if (type == 1) {
+                Ext.Ajax.request({
+                    url: '@Url.Content("~/Grade/AlterData")',
+                    params: {
+                        id: id,
+                        data: Ext.encode(form.getForm().getValues())
+                    },
+                    success: function (response) {
+                        var text = response.responseText;
+
+                    }
+                });
+            }
+            else {
+                alert(Ext.encode(form.getForm().getValues()));
+                Ext.Ajax.request({
+                    url: '@Url.Content("~/Grade/PostData")',
+                    params: {
+                        data: Ext.encode(form.getForm().getValues())
+                    },
+                    success: function (response) {
+                        var text = response.responseText;
+                        alert(text);
+                    }
+                });
+            }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         Ext.create('Ext.container.Viewport',{

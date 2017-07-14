@@ -33,6 +33,7 @@ namespace studentManagement1._0.Controllers
             DataTable dt;
             if (myData != null)
             {
+                //Grade grade = Newtonsoft.Json.JsonConvert.DeserializeObject<Grade>(myData);
                 Grade grade = Newtonsoft.Json.JsonConvert.DeserializeObject<Grade>(myData);
                 dt = dac.SelectData(grade);
             }
