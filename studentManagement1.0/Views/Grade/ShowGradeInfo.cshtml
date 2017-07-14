@@ -8,36 +8,36 @@
     Ext.onReady(function () {
         Ext.QuickTips.init();
 //        renderTo: Ext.getBody();
-        var itemsPerPage = 2;//分页器
-
         //建立数据模型
-        Ext.define('gradeModel',{
-            extend:'Ext.data.Model',
+        var itemsPerPage = 2;   // set the number of items you want per page
+
+        Ext.define('gradeModel', {
+            extend: 'Ext.data.Model',
             fields: [{
                 name: 'id',
                 type: 'string',
                 mapping: 'id'
-            },{
+            }, {
                 name: 'name',
                 type: 'string',
                 mapping: 'name'
-            },{
+            }, {
                 name: 'ach1',
                 type: 'int',
                 mapping: 'ach1'
-            },{
+            }, {
                 name: 'ach2',
                 type: 'int',
                 mapping: 'ach2'
-            },{
+            }, {
                 name: 'ach3',
                 type: 'int',
                 mapping: 'ach3'
-            },{
+            }, {
                 name: 'ach4',
                 type: 'int',
                 mapping: 'ach4'
-            },{
+            }, {
                 name: 'ach5',
                 type: 'int',
                 mapping: 'ach5'
@@ -51,6 +51,60 @@
                 mapping: 'id'
             }]
         });
+
+        Ext.define('kchModel', {
+            extend: 'Ext.data.Model',
+            fields: [{
+                name: 'kch',
+                type: 'string',
+                mapping: 'kch'
+            }]
+        });
+
+        var states = Ext.create('Ext.data.Store', {
+            model: 'idModel',
+            autoLoad: true,
+            proxy: {
+                type: 'ajax',
+                url: 'GetStuId',
+                reader: {
+                    type: 'json',
+                    root: 'items',
+                    totalProperty: 'total'
+                }
+            }
+        });
+
+        var states2 = Ext.create('Ext.data.Store', {
+            model: 'kchModel',
+            autoLoad: true,
+            proxy: {
+                type: 'ajax',
+                url: 'GetCouKch',
+                reader: {
+                    type: 'json',
+                    root: 'items',
+                    totalProperty: 'total'
+                }
+            }
+        });
+        var store = Ext.create('Ext.data.Store', {
+            model: 'gradeModel',
+            autoLoad: true,
+            pageSize: itemsPerPage,
+            proxy: {
+                type: 'ajax',
+                url: 'GetListAdo',
+                reader: {
+                    type: 'json',
+                    root: 'items',
+                    totalProperty: 'total'
+                }
+            }
+        });
+
+
+
 
 
 
@@ -67,7 +121,7 @@
                     id:'del',
                     text: '删除'
                 },{
-                    id:'mod',
+                    id:'alter',
                     text: '修改'
                 },{
                     id:'sel',
@@ -104,7 +158,7 @@
                  //sortable:true 允许排序
                 {header: '学号',  dataIndex: 'id', width:120,sortable:true },
                 {header: '姓名',  dataIndex: 'name', width:120,sortable:true },
-                {header: '语文',  dataIndex: 'ach1', width:120,sortable:true },      
+                {header: '语文',  dataIndex: 'ach1', width:120,sortable:true },
                 {header: '数学',  dataIndex: 'ach2', width:120,sortable:true },
                 {header: '英语',  dataIndex: 'ach3', width:120,flex: 1,sortable:true },
                 {header: '物理',  dataIndex: 'ach4', width:120,flex: 1,sortable:true },
@@ -148,17 +202,17 @@
                         anchor: '95%',
                         name: 'id',
                         queryMode: 'local', //查询模式
-                        editable: false, //是否可编辑
+                        //editable: false, //是否可编辑/
                         displayField: 'id',           //显示的字段
                         valueField: 'id'            //值的字段
                     },{
                         xtype: 'combo',
                         fieldLabel: '课程号',
-//                        store: states2,
+                        store: states2,
                         anchor: '95%',
                         name: 'kch',
                         queryMode: 'local', //查询模式
-                        editable: false, //是否可编辑
+                        //editable: false, //是否可编辑
                         displayField: 'kch',           //显示的字段
                         valueField: 'kch'            //值的字段
                     }]
@@ -207,95 +261,65 @@
         })
 
 
-        //建立顶部工具条
-
-
-        //建立中上部表单
-        var states = Ext.create('Ext.data.Store', {
-            fields: ['abbr', 'name'],
-            data : [
-                {"abbr":"male", "name":"男"},
-                {"abbr":"famale", "name":"女"}
-
-
-            ]
-        });
-
-
-        //建立中心信息表格：
-        var store = Ext.create('Ext.data.Store', {
-            storeId:'simpsonsStore',
-            autoLoad: false,
-            fields:['name', 'email', 'phone'],
-//             totalProperty:'totalCount',
-
-            pageSize: itemsPerPage, // items per page
-            data:{'items':[
-                { 'name': 'Lisa',  "ach1":"lisa@simpsons.com",  "ach2":"555-111-1224"  },
-                { 'name': '1',  "email":"bart@simpsons.com",  "phone":"555-222-1234" },
-                { 'name': '2', "email":"home@simpsons.com",  "phone":"555-222-1244"  },
-                { 'name': '3', "email":"marge@simpsons.com", "phone":"555-222-1254"  },
-                { 'name': '4', "email":"a@q.com", "phone":"44-12879"  },
-                { 'name': '5',  "email":"lisa@simpsons.com",  "phone":"555-111-1224"  },
-                { 'name': '6',  "email":"bart@simpsons.com",  "phone":"555-222-1234" },
-                { 'name': '7', "email":"home@simpsons.com",  "phone":"555-222-1244"  },
-                { 'name': '8', "email":"marge@simpsons.com", "phone":"555-222-1254"  },
-                { 'name': '9', "email":"a@q.com", "phone":"44-12879"  },
-                { 'name': '12',  "email":"lisa@simpsons.com",  "phone":"555-111-1224"  },
-                { 'name': '123',  "email":"bart@simpsons.com",  "phone":"555-222-1234" },
-                { 'name': '14', "email":"home@simpsons.com",  "phone":"555-222-1244"  },
-                { 'name': '15', "email":"marge@simpsons.com", "phone":"555-222-1254"  },
-                { 'name': '16', "email":"a@q.com", "phone":"44-12879"  }
-            ]},
-            proxy: {
-                type: 'memory',
-                reader: {
-                    type: 'json',
-                    root: 'items'
-                }
-            }
-        });
-
-
-                //设置按钮事件
         //新增
         toolbar.items.get('add').on('click',function () {
-//            console.log("123")
             //iframe调用父窗口中的OpenTab函数
             var top = window.parent;
-            top.openTab('@Url.Content("~/Grade/AddGradeInfo")','50','添加学生信息')
-//
-//            top.openTab('@Url.Content("~/Student/addStudentInfo2")','studentInfoDetail','添加学生信息');
+            top.openTab('@Url.Content("~/Grade/AddGradeInfo")','studentInfoDetail3','添加学生成绩')
+
         })
 
         //修改
-        toolbar.items.get('mod').on('click',function () {
-//            console.log("123")
-            //iframe调用父窗口中的OpenTab函数
-            var top = window.parent;
-            top.openTab('addStudentInfo2.html','59','添加学生信息')
-//
-//            top.openTab('@Url.Content("~/Student/addStudentInfo2")','studentInfoDetail','添加学生信息');
+        toolbar.items.get('alter').on('click',function () {
+           
+            var data = grid.getSelectionModel().getSelection();
+            alert(data);
+            if (data.length > 0)
+            {
+                var id = data[0].data['id'];
+                var top = window.parent;
+                alert('选择修改的学号为：' + id);
+                top.OpenTab('@Url.Content("~/Grade/AddGradeInfo")' + "?id=" + id + "&type=1", 'StudentInfoDetai3', '修改学生成绩');
+            }
         })
 
         //删除
-        toolbar.items.get('del').on('click',function () {
-//            console.log("123")
-            //iframe调用父窗口中的OpenTab函数
-            var top = window.parent;
-            top.openTab('addStudentInfo2.html','5','添加学生信息')
-//
-//            top.openTab('@Url.Content("~/Student/addStudentInfo2")','studentInfoDetail','添加学生信息');
+toolbar.items.get('del').on('click', function () {
+            var data = grid.getSelectionModel().getSelection();
+            //console.log(data);
+            Ext.onReady(function () {
+                Ext.MessageBox.confirm('提示', '确定要删除该记录吗？', callBack);
+                function callBack(msg) {
+                    if (msg == 'yes' && data.length > 0) {
+                        var id = data[0].data.id;
+                        //console.log(id);
+                        Ext.Ajax.request({
+                            url: 'PostDataDel',
+                            params: {
+                                id: id
+                            },
+                            success: function (response) {
+                                var text = response.responseText;
+                                alert(text + "已被删除")
+                            }
+                        });
+                        store.load();
+                    }
+
+                }
+            })
         })
 
         //查询
-        toolbar.items.get('sel').on('click',function () {
-//            console.log("123")
-            //iframe调用父窗口中的OpenTab函数
-            var top = window.parent;
-            top.openTab('addStudentInfo2.html','6','添加学生信息')
-//
-//            top.openTab('@Url.Content("~/Student/addStudentInfo2")','studentInfoDetail','添加学生信息');
+        toolbar.items.get('sel').on('click', function () {
+            //Ext.encode( Mixed o ) : String： json对象转换json字符串
+            //Ext.decode(String json ) : Object： json字符串转换json对象
+            //apply方法的签名为“apply( Object obj, Object config, Object defaults ) : Object”，
+            //该方法包含三个参数，第一个参数是要拷贝的目标对象，第二个参数是拷贝的源对象，第三个参数是可选的，表示给目标对象提供一个默认值
+            alert(Ext.encode(form.getForm().getValues()));
+            Ext.apply(store.proxy.extraParams, { 'jsonFilter': Ext.encode(form.getForm().getValues()) });
+            store.load();
+
         })
 
 

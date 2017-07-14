@@ -272,8 +272,6 @@
                 console.log(id);
                 top.openTab('@Url.Content("~/Student/AddStudentInfo")' + "?id=" + id + "&type=1", 'studentInfoDetail1', '--修改学生信息')
             }
-            @*var top = window.parent;
-            top.openTab('@Url.Content("~/Student/AddStudentInfo")' + "?id=" + id + "type=1", '56', '修改学生信息')*@
         })
 
         //删除
@@ -285,9 +283,8 @@
                 function callBack(msg) {
                     if (msg == 'yes' && data.length > 0) {
                         var id = data[0].data.id;
-                        //console.log(id);
-                        Ext.Ajax.request({                            
-                            url: 'PostDataDel',
+                        Ext.Ajax.request({
+                            url: '@Url.Content("~/Student/PostDataDel")',
                             params: {
                                 id: id
                             },
@@ -310,14 +307,6 @@
             Ext.apply(store.proxy.extraParams, { 'jsonFilter': Ext.encode(form.getForm().getValues()) });
             store.load();
         })
-
-
-
-
-
-
-
-
 
 
     })

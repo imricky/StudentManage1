@@ -29,8 +29,8 @@ namespace studentManagement1._0.Controllers
         public string GetListAdo()
         {
             string myData = System.Web.HttpContext.Current.Request.Params["jsonFilter"];
-            GradeDataAccess dac = new GradeDataAccess(); 
-             DataTable dt;
+            GradeDataAccess dac = new GradeDataAccess();
+            DataTable dt;
             if (myData != null)
             {
                 Grade grade = Newtonsoft.Json.JsonConvert.DeserializeObject<Grade>(myData);
