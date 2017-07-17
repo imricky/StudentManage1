@@ -8,13 +8,13 @@
         var id = '@ViewBag.ID';
         var type = '@ViewBag.type';
     Ext.onReady(function () {
-        var states = Ext.create('Ext.data.Store', {
-            fields: ['abbr', 'name'],
-            data : [
-                {"abbr":"male", "name":"男"},
-                {"abbr":"famale", "name":"女"}
-            ]
-        });
+        //var states = Ext.create('Ext.data.Store', {
+        //    fields: ['abbr', 'name'],
+        //    data : [
+        //        {"abbr":"male", "name":"男"},
+        //        {"abbr":"famale", "name":"女"}
+        //    ]
+        //});
 
 
         Ext.Ajax.request({
@@ -143,6 +143,7 @@
                     success: function (response) {
                         var text = response.responseText;
 
+
                     }
                 });
             }
@@ -155,7 +156,7 @@
                     },
                     success: function (response) {
                         var text = response.responseText;
-                        alert(text);
+                        alert(text+'new');
                     }
                 });
             }

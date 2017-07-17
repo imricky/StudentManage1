@@ -273,7 +273,7 @@
                 var id = data[0].data['id'];
                 var top = window.parent;
                 alert('选择修改的学号为：' + id);
-                top.OpenTab('@Url.Content("~/Grade/AddGradeInfo")' + "?id=" + id + "&type=1", 'StudentInfoDetai3', '修改学生成绩');
+                top.openTab('@Url.Content("~/Grade/AddGradeInfo")' + "?id=" + id + "&type=1", 'StudentInfoDetai3', '修改学生成绩');
             }
         })
 
