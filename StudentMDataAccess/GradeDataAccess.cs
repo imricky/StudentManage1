@@ -75,6 +75,8 @@ namespace StudentMDataAccess
                     "(select id from gradeInfo" +
                     "where ((ach >= " + grade.achlow + ")and(ach <= " + grade.achhigh + "))))" +
                     "group by stuInfo.id,stuInfo.name";
+
+                //sql = "select ";
             }
             else
             {
