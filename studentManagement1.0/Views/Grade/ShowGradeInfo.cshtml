@@ -228,17 +228,19 @@
                         columnWidth: .4,
                         border: false,
                         layout:  'column',
-                        defaultType: 'textfield',
+                        defaultType: 'numberfield',
                         items: [{
                             fieldLabel: '分数区间',
                             columnWidth: .5,
                             name: 'achlow',
+                            value: 0,
                             anchor: '95%'
                         },{
                             labelWidth:55,
                             fieldLabel: '到',
                             columnWidth: .4,
                             name: 'achhigh',
+                            value: 0,
                             anchor: '95%'
                         }]
                     }]
@@ -265,7 +267,7 @@
 
         //修改
         toolbar.items.get('alter').on('click',function () {
-           
+
             var data = grid.getSelectionModel().getSelection();
             alert(data);
             if (data.length > 0)

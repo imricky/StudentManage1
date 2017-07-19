@@ -120,7 +120,6 @@ namespace StudentMDataAccess
         public int ach { get; set; }
         public string remarks { get; set; }
         public int achhigh { get; set; }
-
         public int achlow { get; set; }
     }
 }

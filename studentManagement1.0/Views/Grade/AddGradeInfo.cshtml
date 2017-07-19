@@ -142,10 +142,11 @@
                     },
                     success: function (response) {
                         var text = response.responseText;
-
-
+                        alert('添加成功');
                     }
+                    
                 });
+                alert(Ext.encode(form.getForm().getValues()));
             }
             else {
                 alert(Ext.encode(form.getForm().getValues()));
@@ -172,10 +173,6 @@
             ]
         })
     })
-
-
-
-
     </script>
 
     }
