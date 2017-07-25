@@ -16,6 +16,7 @@ namespace studentManagement1._0.Controllers
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
+            ViewBag.Title = "welcome to student management system";
 
             return View();
         }
